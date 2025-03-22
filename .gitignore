@@ -1,2 +1,4 @@
 node_modules/
+
+# Ignore the database file. It is rebuilt every time we run the server.
 db/database.db

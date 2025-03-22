@@ -1,3 +1,5 @@
+
+
 -- Create customers table
 CREATE TABLE IF NOT EXISTS customers (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -11,18 +13,18 @@ CREATE TABLE IF NOT EXISTS products (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
   description TEXT,
-  price REAL NOT NULL,
+  price FLOAT NOT NULL,
   category TEXT
 );
 
--- Create basket table
-CREATE TABLE IF NOT EXISTS basket (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  customerId INTEGER,
-  productId INTEGER,
+-- Create basketEntries
+CREATE TABLE IF NOT EXISTS basketEntries (
+  customer_id INTEGER,
+  product_id INTEGER,
   quantity INTEGER,
-  FOREIGN KEY(customerId) REFERENCES customers(id),
-  FOREIGN KEY(productId) REFERENCES products(id)
+  PRIMARY KEY (customer_id, product_id),
+  FOREIGN KEY (customer_id) REFERENCES customers(id),
+  FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
--- Additional SQL commands can go here...
+
