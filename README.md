@@ -6,7 +6,7 @@ Before you run the project, install all dependencies from `package.json` with fo
 
 Before running the server, you have to initialize the db. The script will rebuild the database based on the `db/schema.sql`file and fill up the database with entries defined in `db/seed.sql`
 
-    npm run init.db
+    npm run init-db
 
 To run the server with hot reload on save run the following command
 
