@@ -10,11 +10,15 @@ CREATE TABLE IF NOT EXISTS customers (
 
 -- Create products table
 CREATE TABLE IF NOT EXISTS products (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  description TEXT,
-  price FLOAT NOT NULL,
-  category TEXT
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    img TEXT NOT NULL,
+    description TEXT NOT NULL,
+    fullDescription TEXT NOT NULL,
+    category TEXT NOT NULL,
+    popular BOOLEAN NOT NULL DEFAULT 0,
+    price DECIMAL(10,2) NOT NULL,
+    brand TEXT NOT NULL
 );
 
 -- Create basketEntries
