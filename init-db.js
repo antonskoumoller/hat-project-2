@@ -39,7 +39,24 @@ fs.readFile(schemaPath, "utf8", (err, data) => {
 			process.exit(1);
 		}
 		console.log("Database schema applied successfully.");
-		db.close();
+
+		// Read and execute the seed file after the schema is applied
+		const seedPath = path.join(dbDir, "seed.sql");
+		fs.readFile(seedPath, "utf8", (err, seedData) => {
+			if (err) {
+				console.error("Error reading seed file:", err.message);
+				process.exit(1);
+			}
+			db.exec(seedData, (err) => {
+				if (err) {
+					console.error("Error executing seed data:", err.message);
+					process.exit(1);
+				}
+				console.log("Database seeded successfully.");
+				// Close the database connection after seeding
+				db.close();
+			});
+		});
 	});
 });
 
