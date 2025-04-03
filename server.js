@@ -38,7 +38,7 @@ app.post("/customers", (req, res) => {
 	// querry 
 	const query = "INSERT INTO customers (name, email, password) VALUES (?, ?, ?)";
 
-	db.post(query, [name, email, password], function (err) {
+	db.run(query, [name, email, password], function (err) {
 		if (err) {
 			console.error("Error creating user:", err.message);
 			return res.status(500).json({ error: "Internal server error" });
@@ -50,6 +50,8 @@ app.post("/customers", (req, res) => {
 // Endpoint to get customer with id
 app.get("/customers/:id", (req, res) => {
 	const customerId = req.params.id;
+
+	//query
 	const query = "SELECT * FROM customers WHERE id = ?";
 	db.get(query, [customerId], (err, row) => {
 		if (err) {
@@ -64,10 +66,46 @@ app.get("/customers/:id", (req, res) => {
 });
 
 // Update customer with id
+app.put("/customers/:id", (req, res) => {
+	const customerId = req.params.id;
+	const { name, email, password } = req.body;
 
-//Delete customer with id
+	// Validate input (Is nescessary beause we want the front-end to handle updating the object and then giving it to the back-end with all fields)
+	if (!name || !email || !password) {
+		return res.status(400).json({ error: "Name, email, and password are required" });
+	}
 
+	const query = "UPDATE customers SET name = ?, email = ?, password = ? WHERE id = ?";
 
+	db.run(query, [name, email, password, customerId], function (err) {
+		if (err) {
+			console.error("Error updating user:", err.message);
+			return res.status(500).json({ error: "Internal server error" });
+		}
+		if (this.changes === 0) {
+			return res.status(404).json({ error: "User not found" });
+		}
+		res.status(200).json({ id: customerId, name, email, password });
+	});
+
+});
+
+//Delete customer with id (Maybe we should have some kind of cascading effect, so basket-items are also deleted?)
+app.delete("/customers/:id", (req, res) => {
+	const customerId = req.params.id;
+	const query = "DELETE FROM customers WHERE id = ?";
+
+	db.run(query, [customerId], function (err) {
+		if (err) {
+			console.error("Error deleting user:", err.message);
+			return res.status(500).json({ error: "Internal server error" });
+		}
+		if (this.changes === 0) {
+			return res.status(404).json({ error: "User not found" });
+		}
+		res.status(204).send();
+	});
+});
 
 // GET /customers/:id/basket
 app.get("/customers/:id/basket", (req, res) => {
