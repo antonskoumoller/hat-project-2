@@ -28,7 +28,7 @@ app.get("/customers", (req, res) => {
 	});
 });
 
-//Endpoint to create a new customer
+//Endpoint to create a new customer (Maybe this should be the path to the login form ?)
 app.post("/customers", (req, res) => {
 	const { name, email, password } = req.body;
 	// Validate input
