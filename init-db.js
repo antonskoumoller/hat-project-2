@@ -25,39 +25,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
 		process.exit(1);
 	}
 	console.log("New SQLite database created.");
-});
-
-// Read the schema file and execute its SQL commands
-fs.readFile(schemaPath, "utf8", (err, data) => {
-	if (err) {
-		console.error("Error reading schema file:", err.message);
-		process.exit(1);
-	}
-	db.exec(data, (err) => {
-		if (err) {
-			console.error("Error executing schema:", err.message);
-			process.exit(1);
-		}
-		console.log("Database schema applied successfully.");
-
-		// Read and execute the seed file after the schema is applied
-		const seedPath = path.join(dbDir, "seed.sql");
-		fs.readFile(seedPath, "utf8", (err, seedData) => {
-			if (err) {
-				console.error("Error reading seed file:", err.message);
-				process.exit(1);
-			}
-			db.exec(seedData, (err) => {
-				if (err) {
-					console.error("Error executing seed data:", err.message);
-					process.exit(1);
-				}
-				console.log("Database seeded successfully.");
-				// Close the database connection after seeding
-				db.close();
-			});
-		});
-	});
+	db.close();
 });
 
 module.exports = db;
