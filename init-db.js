@@ -6,6 +6,7 @@ const sqlite3 = require("sqlite3").verbose();
 const dbDir = path.join(__dirname, "db");
 const dbPath = path.join(dbDir, "database.db");
 const schemaPath = path.join(dbDir, "schema.sql");
+const seedPath = path.join(dbDir, "seed.sql");
 
 // Ensure the database directory exists
 if (!fs.existsSync(dbDir)) {
@@ -39,6 +40,22 @@ fs.readFile(schemaPath, "utf8", (err, data) => {
 			process.exit(1);
 		}
 		console.log("Database schema applied successfully.");
+	});
+});
+
+// Read and execute the seed file after the schema is applied
+fs.readFile(seedPath, "utf8", (err, seedData) => {
+	if (err) {
+		console.error("Error reading seed file:", err.message);
+		process.exit(1);
+	}
+	db.exec(seedData, (err) => {
+		if (err) {
+			console.error("Error executing seed data:", err.message);
+			process.exit(1);
+		}
+		console.log("Database seeded successfully.");
+		// Close the database connection after seeding
 		db.close();
 	});
 });
