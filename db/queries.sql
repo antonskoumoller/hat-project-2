@@ -13,7 +13,7 @@ SELECT * FROM products WHERE id = ?
 -- GET /products/categories
 SELECT DISTINCT(category) FROM products
 
--- GET /products/categories/:categoryName
+-- GET /products/categories/:categoryName 
 SELECT * FROM products WHERE category = ?
 
 -- GET /customers/:id/basket

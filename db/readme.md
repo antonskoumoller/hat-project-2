@@ -18,6 +18,23 @@ Unique `id` generated when an entry is inserted.
 
 ### `products` table
 
+`id`: Unique and used as primary key
+`name`: Text
+`img` : path to picture in image dir
+`description` : Text
+`fullDescription` : Text
+`category` : Text
+`popular` : Boolean
+`price`: decimal number
+`brand`: Text
+
+### `basketEnitries` table
+
+`customer_id` : ref to customer
+`product_id` : ref to product
+`Quantity` : int
+Primary Key: (c_id, p_id)
+
 ## Filling up the db
 
 The `seed.sql` will fill up our DB with data for the webshop.
