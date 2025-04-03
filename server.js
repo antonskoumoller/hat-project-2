@@ -22,7 +22,7 @@ app.get("/customers", (req, res) => {
 			return res.status(500).json({ error: "Internal server error" });
 		}
 		if (row.length === 0) {
-			return res.status(404).json({ error: "Customer not found" });
+			return res.status(404).json({ error: "No customers in database" });
 		}
 		res.status(200).json(row);
 	});
@@ -43,7 +43,7 @@ app.post("/customers", (req, res) => {
 			console.error("Error creating Customer:", err.message);
 			return res.status(500).json({ error: "Internal server error" });
 		}
-		res.status(201).json({ id: this.lastID, name, email });
+		res.status(201).send(`Customer ${name} created`);
 	});
 })
 
@@ -85,7 +85,7 @@ app.put("/customers/:id", (req, res) => {
 		if (this.changes === 0) {
 			return res.status(404).json({ error: "Customer not found" });
 		}
-		res.status(200).json({ id: customerId, name, email, password });
+		res.status(200).json({ message: `Customer with id:${customerId} updated successfully` });
 	});
 
 });
@@ -103,7 +103,7 @@ app.delete("/customers/:id", (req, res) => {
 		if (this.changes === 0) {
 			return res.status(404).json({ error: "Customer not found" });
 		}
-		res.status(204).send();
+		res.status(200).json({ message: "Customer deleted" });;
 	});
 });
 
