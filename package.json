@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "init-db": "node init-db.js && sqlite3 db/database.db < db/seed.sql",
+    "init-db": "node init-db.js",
     "dev": "nodemon --watch views --watch . --ext js,pug --exec node server.js"
   },
   "repository": {
