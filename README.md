@@ -22,3 +22,5 @@ If you wish to be able to browse the actual content of the sqlite db you can dow
 6. Use the "Execute SQL" tab to test queries
 
 Remember to run the `npm run init-db`first. This will create the file. The `database.db` file is .gitignored to avoid silly merge conflicts, so you will have to create it yourself.
+
+Test
