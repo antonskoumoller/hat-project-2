@@ -18,11 +18,11 @@ app.get("/customers", (req, res) => {
 	const query = "SELECT * FROM customers";
 	db.all(query, (err, row) => {
 		if (err) {
-			console.error("Error retrieving user:", err.message);
+			console.error("Error retrieving Customer:", err.message);
 			return res.status(500).json({ error: "Internal server error" });
 		}
-		if (!row) {
-			return res.status(404).json({ error: "User not found" });
+		if (row.length === 0) {
+			return res.status(404).json({ error: "Customer not found" });
 		}
 		res.status(200).json(row);
 	});
@@ -40,7 +40,7 @@ app.post("/customers", (req, res) => {
 
 	db.run(query, [name, email, password], function (err) {
 		if (err) {
-			console.error("Error creating user:", err.message);
+			console.error("Error creating Customer:", err.message);
 			return res.status(500).json({ error: "Internal server error" });
 		}
 		res.status(201).json({ id: this.lastID, name, email });
@@ -55,11 +55,11 @@ app.get("/customers/:id", (req, res) => {
 	const query = "SELECT * FROM customers WHERE id = ?";
 	db.get(query, [customerId], (err, row) => {
 		if (err) {
-			console.error("Error retrieving user:", err.message);
+			console.error("Error retrieving Customer:", err.message);
 			return res.status(500).json({ error: "Internal server error" });
 		}
-		if (!row) {
-			return res.status(404).json({ error: "User not found" });
+		if (row.length === 0) {
+			return res.status(404).json({ error: "Customer not found" });
 		}
 		res.status(200).json(row);
 	});
@@ -79,11 +79,12 @@ app.put("/customers/:id", (req, res) => {
 
 	db.run(query, [name, email, password, customerId], function (err) {
 		if (err) {
-			console.error("Error updating user:", err.message);
+			console.error("Error updating Customer:", err.message);
 			return res.status(500).json({ error: "Internal server error" });
 		}
+		// this.changes is an sqlite3 property that shows how many rows were affected
 		if (this.changes === 0) {
-			return res.status(404).json({ error: "User not found" });
+			return res.status(404).json({ error: "Customer not found" });
 		}
 		res.status(200).json({ id: customerId, name, email, password });
 	});
@@ -97,11 +98,11 @@ app.delete("/customers/:id", (req, res) => {
 
 	db.run(query, [customerId], function (err) {
 		if (err) {
-			console.error("Error deleting user:", err.message);
+			console.error("Error deleting Customer:", err.message);
 			return res.status(500).json({ error: "Internal server error" });
 		}
 		if (this.changes === 0) {
-			return res.status(404).json({ error: "User not found" });
+			return res.status(404).json({ error: "Customer not found" });
 		}
 		res.status(204).send();
 	});
@@ -131,11 +132,11 @@ app.get("/customers/:id", (req, res) => {
 	const query = "SELECT * FROM customers WHERE id = ?";
 	db.get(query, [customerId], (err, row) => {
 		if (err) {
-			console.error("Error retrieving user:", err.message);
+			console.error("Error retrieving Customer:", err.message);
 			return res.status(500).json({ error: "Internal server error" });
 		}
-		if (!row) {
-			return res.status(404).json({ error: "User not found" });
+		if (row.length === 0) {
+			return res.status(404).json({ error: "Customer not found" });
 		}
 		res.status(200).json(row);
 	});
