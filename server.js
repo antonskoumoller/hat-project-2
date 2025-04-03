@@ -51,7 +51,6 @@ app.post("/customers", (req, res) => {
 app.get("/customers/:id", (req, res) => {
 	const customerId = req.params.id;
 
-	//query
 	const query = "SELECT * FROM customers WHERE id = ?";
 	db.get(query, [customerId], (err, row) => {
 		if (err) {
@@ -123,22 +122,6 @@ app.get("/customers/:id/basket", (req, res) => {
 			return res.status(500).json({ error: "Internal server error" });
 		}
 		res.status(200).json(rows);
-	});
-});
-
-// Endpoint to get customer with id
-app.get("/customers/:id", (req, res) => {
-	const customerId = req.params.id;
-	const query = "SELECT * FROM customers WHERE id = ?";
-	db.get(query, [customerId], (err, row) => {
-		if (err) {
-			console.error("Error retrieving Customer:", err.message);
-			return res.status(500).json({ error: "Internal server error" });
-		}
-		if (row.length === 0) {
-			return res.status(404).json({ error: "Customer not found" });
-		}
-		res.status(200).json(row);
 	});
 });
 
