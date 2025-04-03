@@ -25,22 +25,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
 		process.exit(1);
 	}
 	console.log("New SQLite database created.");
-});
-
-// Read the schema file and execute its SQL commands
-fs.readFile(schemaPath, "utf8", (err, data) => {
-	if (err) {
-		console.error("Error reading schema file:", err.message);
-		process.exit(1);
-	}
-	db.exec(data, (err) => {
-		if (err) {
-			console.error("Error executing schema:", err.message);
-			process.exit(1);
-		}
-		console.log("Database schema applied successfully.");
-		db.close();
-	});
+	db.close();
 });
 
 module.exports = db;
