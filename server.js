@@ -33,10 +33,13 @@ app.post("/customers", (req, res) => {
 	const { name, email, password } = req.body;
 	// Validate input
 	if (!name || !email || !password) {
-		return res.status(400).json({ error: "Name, email, and password are required" });
+		return res
+			.status(400)
+			.json({ error: "Name, email, and password are required" });
 	}
-	// querry 
-	const query = "INSERT INTO customers (name, email, password) VALUES (?, ?, ?)";
+	// querry
+	const query =
+		"INSERT INTO customers (name, email, password) VALUES (?, ?, ?)";
 
 	db.run(query, [name, email, password], function (err) {
 		if (err) {
@@ -45,7 +48,7 @@ app.post("/customers", (req, res) => {
 		}
 		res.status(201).json({ id: this.lastID, name, email });
 	});
-})
+});
 
 // Endpoint to get customer with id
 app.get("/customers/:id", (req, res) => {
@@ -71,10 +74,13 @@ app.put("/customers/:id", (req, res) => {
 
 	// Validate input (Is nescessary beause we want the front-end to handle updating the object and then giving it to the back-end with all fields)
 	if (!name || !email || !password) {
-		return res.status(400).json({ error: "Name, email, and password are required" });
+		return res
+			.status(400)
+			.json({ error: "Name, email, and password are required" });
 	}
 
-	const query = "UPDATE customers SET name = ?, email = ?, password = ? WHERE id = ?";
+	const query =
+		"UPDATE customers SET name = ?, email = ?, password = ? WHERE id = ?";
 
 	db.run(query, [name, email, password, customerId], function (err) {
 		if (err) {
@@ -87,7 +93,6 @@ app.put("/customers/:id", (req, res) => {
 		}
 		res.status(200).json({ id: customerId, name, email, password });
 	});
-
 });
 
 //Delete customer with id (Maybe we should have some kind of cascading effect, so basket-items are also deleted?)
@@ -125,6 +130,22 @@ app.get("/customers/:id/basket", (req, res) => {
 		if (err) {
 			console.error("Error retrieving basket:", err.message);
 			return res.status(500).json({ error: "Internal server error" });
+		}
+		res.status(200).json(rows);
+	});
+});
+
+// Endpoint to get all products with category name
+app.get("/products/categories/:categoryName", (req, res) => {
+	const categoryName = req.params.categoryName;
+	const query = "SELECT * FROM products WHERE category = ?";
+	db.all(query, [categoryName], (err, rows) => {
+		if (err) {
+			console.error("Error retrieving category:", err.message);
+			return res.status(500).json({ error: "Internal server error" });
+		}
+		if (rows.length === 0) {
+			return res.status(404).json({ error: "No products found" });
 		}
 		res.status(200).json(rows);
 	});
