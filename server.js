@@ -16,15 +16,15 @@ app.use(express.json());
 // Endpoint to get all customers
 app.get("/customers", (req, res) => {
 	const query = "SELECT * FROM customers";
-	db.all(query, (err, row) => {
+	db.all(query, (err, rows) => {
 		if (err) {
 			console.error("Error retrieving Customer:", err.message);
 			return res.status(500).json({ error: "Internal server error" });
 		}
-		if (row.length === 0) {
+		if (rows.length === 0) {
 			return res.status(404).json({ error: "No customers in database" });
 		}
-		res.status(200).json(row);
+		res.status(200).json(rows);
 	});
 });
 
@@ -60,7 +60,7 @@ app.get("/customers/:id", (req, res) => {
 			console.error("Error retrieving Customer:", err.message);
 			return res.status(500).json({ error: "Internal server error" });
 		}
-		if (row.length === 0) {
+		if (row === undefined) {
 			return res.status(404).json({ error: "Customer not found" });
 		}
 		res.status(200).json(row);
@@ -148,6 +148,28 @@ app.get("/products/categories/:categoryName", (req, res) => {
 			return res.status(404).json({ error: "No products found" });
 		}
 		res.status(200).json(rows);
+	});
+});
+
+//Gets product with id "id"
+app.get("/products/:id", (req, res) => {
+	const product_id = req.params.id;
+	const query = "SELECT * FROM products WHERE id = ?";
+	//Check for case where data-base isn't load yet (unlikely)
+	if (!db) {
+        return res.status(500).json({ error: "Database not yet initialized" });
+    }
+	db.get(query, [product_id], (err, row) => {
+		if (err) {
+			//prints the string concatenated with the err.message (separated by space)
+			console.error("Error retrieving product:", err.message);
+			return res.status(500).json({ error: "Internal server error" });
+		}
+		//db.get returns undefined if no results
+		if (row === undefined) {
+			return res.status(404).json({ error: "No products found" });
+		}
+		res.status(200).json(row);
 	});
 });
 
