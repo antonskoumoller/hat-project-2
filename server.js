@@ -107,11 +107,6 @@ app.delete("/customers/:id", (req, res) => {
 	});
 });
 
-// Endpoint to get customers
-app.post("/customers", (req, res) => {
-	res.status(200).json("HEY");
-});
-
 // GET /customers/:id/basket
 app.get("/customers/:id/basket", (req, res) => {
 	const customerId = req.params.id;
