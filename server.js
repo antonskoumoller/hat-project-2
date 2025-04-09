@@ -98,6 +98,38 @@ app.get("/products", (req, res) => {
   });
 });
 
+//Endpoint to get a customer's basket
+app.get("/customers/:id/basket", (req, res) => {
+  const customerId = req.params.id;
+  const query = "SELECT * FROM basketEntries WHERE customer_id = ?";
+  db.get(query, [customerId], (err, row) => {
+    if (err) {
+      console.error("Error retrieving user:", err.message);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+    if (!row) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json(row);
+  });
+});
+
+// //Endpoint to add an item to a customers basket (DOES NOT WORK??)
+// app.post("/customers/:id/basket/:productID/:quant", (req, res) => {
+//   const customerId = req.params.id;
+//   const productID = req.params.productID;
+//   const quantity = req.params.quant;
+//   const query =
+//     "INSERT INTO basketEntries (customer_id, product_id, quantity) VALUES (?, ?, ?); ";
+//   db.run(query, [customerId, productID, quantity], function (err) {
+//     if (err) {
+//       console.error("Error adding item to the baske:", err.message);
+//       return res.status(500).json({ error: "Internal server error" });
+//     }
+//     res.status(200).json("Item(s) was succesfully added to your basket!");
+//   });
+// });
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
