@@ -24,7 +24,29 @@
   },
   "devDependencies": {
     "connect-livereload": "^0.6.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
     "livereload": "^0.9.3",
-    "nodemon": "^3.1.9"
-  } 
+    "nodemon": "^3.1.9",
+    "prettier": "^3.5.3"
+  }, 
+  "prettier": {
+    "useTabs": true,
+    "tabWidth": 4,
+    "singleQuote": false,
+    "semi": true,
+    "trailingComma": "none",
+    "bracketSpacing": true,
+    "arrowParens": "always"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,md}": [
+      "prettier --write"
+    ]
+  }
 }
