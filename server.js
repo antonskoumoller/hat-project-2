@@ -8,6 +8,9 @@ const db = new sqlite3.Database("./db/database.db", (err) => {
 		console.error("Error connecting to database:", err.message);
 		process.exit(1);
 	}
+	// Enable foreign key constraints(This enable us to cascade-delete basket-items when deleting a customer)
+	db.run("PRAGMA foreign_keys = ON");
+
 	console.log("Connected to the SQLite database.");
 });
 
