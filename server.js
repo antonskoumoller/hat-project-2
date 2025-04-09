@@ -146,14 +146,26 @@ app.get("/products/categories/:categoryName", (req, res) => {
 	});
 });
 
+// Get all product categories 
+app.get("/products/categories", (req, res) => {
+	const query = "SELECT DISTINCT category FROM products";
+	db.all(query, (err, rows) => {
+		if (err) {
+			console.error("Error retrieving categories:", err.message);
+			return res.status(500).json({ error: "Internal server error" });
+		}
+		res.status(200).json(rows);
+	});
+});
+
 //Gets product with id "id"
 app.get("/products/:id", (req, res) => {
 	const product_id = req.params.id;
 	const query = "SELECT * FROM products WHERE id = ?";
 	//Check for case where data-base isn't load yet (unlikely)
 	if (!db) {
-        return res.status(500).json({ error: "Database not yet initialized" });
-    }
+		return res.status(500).json({ error: "Database not yet initialized" });
+	}
 	db.get(query, [product_id], (err, row) => {
 		if (err) {
 			//prints the string concatenated with the err.message (separated by space)
@@ -172,3 +184,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
 });
+
+
