@@ -27,8 +27,16 @@ CREATE TABLE IF NOT EXISTS basketEntries (
   product_id INTEGER,
   quantity INTEGER,
   PRIMARY KEY (customer_id, product_id),
-  FOREIGN KEY (customer_id) REFERENCES customers(id),
+  FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE,
   FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
 
+CREATE TRIGGER remove_zero_quantity
+AFTER UPDATE ON basketEntries
+FOR EACH ROW
+WHEN NEW.quantity <= 0
+BEGIN
+  DELETE FROM basketEntries 
+  WHERE rowid = NEW.rowid;
+END;
