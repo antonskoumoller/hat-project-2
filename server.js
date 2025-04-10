@@ -94,7 +94,9 @@ app.put("/customers/:id", (req, res) => {
 		if (this.changes === 0) {
 			return res.status(404).json({ error: "Customer not found" });
 		}
-		res.status(200).json({ message: `Customer with id:${customerId} updated successfully` });
+		res.status(200).json({
+			message: `Customer with id:${customerId} updated successfully`
+		});
 	});
 });
 
@@ -111,7 +113,7 @@ app.delete("/customers/:id", (req, res) => {
 		if (this.changes === 0) {
 			return res.status(404).json({ error: "Customer not found" });
 		}
-		res.status(200).json({ message: "Customer deleted" });;
+		res.status(200).json({ message: "Customer deleted" });
 	});
 });
 
@@ -180,6 +182,119 @@ app.get("/products/:id", (req, res) => {
 			return res.status(404).json({ error: "No products found" });
 		}
 		res.status(200).json(row);
+	});
+});
+
+app.post("/customers/:customer_id/basket/:product_id", (req, res) => {
+	const customer_id = req.params.customer_id;
+	const product_id = req.params.product_id;
+	const query = `INSERT INTO basketEntries (customer_id, product_id, quantity)
+						VALUES (?, ?, 1)
+						ON CONFLICT(customer_id, product_id)
+						DO UPDATE
+							SET quantity = quantity + EXCLUDED.quantity;`;
+	if (!customer_id || !product_id) {
+		return res
+			.status(400)
+			.json({ error: "customer_id and product_id are required" });
+	}
+
+	if (!db) {
+		return res.status(500).json({ error: "Database not yet initialized" });
+	}
+
+	db.run(query, [customer_id, product_id], function (err) {
+		if (err) {
+			console.error("Error creating updating basketEntry:", err.message);
+			return res.status(500).json({ error: "Internal server error" });
+		}
+		res.status(201).send(
+			`Product with ID: ${product_id} added to customer with ID: ${customer_id}`
+		);
+	});
+});
+
+// GET /customers/:id/basket
+app.get("/customers/:customer_id/basket/:product_id", (req, res) => {
+	const customer_id = req.params.customer_id;
+	const product_id = req.params.product_id;
+	const query = `
+      SELECT quantity
+      FROM basketEntries
+      JOIN products p ON p.id = basketEntries.product_id
+      WHERE customer_id = ? AND product_id = ?
+    `;
+	db.get(query, [customer_id, product_id], (err, rows) => {
+		if (err) {
+			console.error("Error retrieving quantity:", err.message);
+			return res.status(500).json({ error: "Internal server error" });
+		}
+
+		if (rows === undefined) {
+			return res
+				.status(404)
+				.json({ error: "Product not found in this customers basket" });
+		}
+
+		res.status(200).json(rows);
+	});
+});
+
+app.delete("/customers/:customer_id/basket/:product_id", (req, res) => {
+	const customer_id = req.params.customer_id;
+	const product_id = req.params.product_id;
+	const query = `
+      DELETE
+      FROM basketEntries
+      WHERE customer_id = ? AND product_id = ?
+    `;
+	db.run(query, [customer_id, product_id], function (err) {
+		if (err) {
+			console.error("Error deleting product from basket:", err.message);
+			return res.status(500).json({ error: "Internal server error" });
+		}
+		if (this.changes === 0) {
+			return res.status(404).json({ error: "Item in basket not found" });
+		}
+		res.status(200).json({ message: "Product deleted from basket" });
+	});
+	db.delete;
+});
+
+app.put("/customers/:customer_id/basket/:product_id", (req, res) => {
+	const customer_id = req.params.customer_id;
+	const product_id = req.params.product_id;
+	const query = `
+	  INSERT INTO basketEntries (customer_id, product_id, quantity)
+	  VALUES (?, ?, -1)
+	  ON CONFLICT(customer_id, product_id)
+	  DO UPDATE
+		SET quantity = quantity - 1;
+	`;
+
+	// If you’d rather new rows start at 0, just use VALUES (?, ?, 0) instead
+	// and still do SET quantity = quantity - 1 in the ON CONFLICT clause.
+
+	if (!customer_id || !product_id) {
+		return res
+			.status(400)
+			.json({ error: "customer_id and product_id are required" });
+	}
+
+	if (!db) {
+		return res.status(500).json({ error: "Database not yet initialized" });
+	}
+
+	db.run(query, [customer_id, product_id], function (err) {
+		if (err) {
+			console.error("Error updating basketEntry:", err.message);
+			return res.status(500).json({ error: "Internal server error" });
+		}
+		return res
+			.status(200)
+			.send(
+				`Product with ID: ${product_id} decremented for customer with ID: ${customer_id}`
+			);
 	});
 });
 

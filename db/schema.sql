@@ -32,3 +32,11 @@ CREATE TABLE IF NOT EXISTS basketEntries (
 );
 
 
+CREATE TRIGGER remove_zero_quantity
+AFTER UPDATE ON basketEntries
+FOR EACH ROW
+WHEN NEW.quantity <= 0
+BEGIN
+  DELETE FROM basketEntries 
+  WHERE rowid = NEW.rowid;
+END;
