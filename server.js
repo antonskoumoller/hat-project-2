@@ -242,6 +242,24 @@ app.get("/customers/:customer_id/basket/:product_id", (req, res) => {
 	});
 });
 
+// DELETE /customers/:id/basket
+app.delete("/customers/:id/basket", (req, res) => {
+  const customerId = req.params.id;
+  const query = `
+    DELETE FROM basketEntries
+    WHERE customer_id = ?
+  `;
+  db.run(query, [customerId], function (err) {
+    if (err) {
+      console.error("Error emptying basket:", err.message);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+    res.status(200).json({
+      message: `Deleted ${this.changes} item(s) from basket.`,
+    });
+  });
+});
+
 app.delete("/customers/:customer_id/basket/:product_id", (req, res) => {
 	const customer_id = req.params.customer_id;
 	const product_id = req.params.product_id;
