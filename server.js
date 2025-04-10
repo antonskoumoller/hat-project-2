@@ -4,7 +4,6 @@ const sqlite3 = require("sqlite3").verbose();
 
 // Open a new database connection for the server
 const db = new sqlite3.Database("./db/database.db", (err) => {
-
 	if (err) {
 		console.error("Error connecting to database:", err.message);
 		process.exit(1);
@@ -47,6 +46,11 @@ app.post("/customers", (req, res) => {
 
 	db.run(query, [name, email, password], function (err) {
 		if (err) {
+			if (err.code === "SQLITE_CONSTRAINT") {
+				return res
+					.status(400)
+					.json({ error: err.message, email: email });
+			}
 			console.error("Error creating Customer:", err.message);
 			return res.status(500).json({ error: "Internal server error" });
 		}
@@ -56,7 +60,6 @@ app.post("/customers", (req, res) => {
 
 // Endpoint to get customer with id
 app.get("/customers/:id", (req, res) => {
-
 	const customerId = req.params.id;
 
 	const query = "SELECT * FROM customers WHERE id = ?";
@@ -121,20 +124,35 @@ app.delete("/customers/:id", (req, res) => {
 
 // GET /customers/:id/basket
 app.get("/customers/:id/basket", (req, res) => {
-  const customerId = req.params.id;
-  const query = `
+	const customerId = req.params.id;
+	const query = `
       SELECT *
       FROM basketEntries
       JOIN products p ON p.id = basketEntries.product_id
       WHERE customer_id = ?
     `;
-  db.all(query, [customerId], (err, rows) => {
-    if (err) {
-      console.error("Error retrieving basket:", err.message);
-      return res.status(500).json({ error: "Internal server error" });
-    }
-    res.status(200).json(rows);
-  });
+	db.all(query, [customerId], (err, rows) => {
+		if (err) {
+			console.error("Error retrieving basket:", err.message);
+			return res.status(500).json({ error: "Internal server error" });
+		}
+		res.status(200).json(rows);
+	});
+});
+
+// Endpoint to get all products
+app.get("/products", (req, res) => {
+	const query = "SELECT * FROM products";
+	db.all(query, (err, row) => {
+		if (err) {
+			console.error("Error retrieving products:", err.message);
+			return res.status(500).json({ error: "Internal server error" });
+		}
+		if (!row) {
+			return res.status(404).json({ error: "No products were found" });
+		}
+		res.status(200).json(row);
+	});
 });
 
 // Endpoint to get all products with category name
@@ -153,7 +171,7 @@ app.get("/products/categories/:categoryName", (req, res) => {
 	});
 });
 
-// Get all product categories 
+// Get all product categories
 app.get("/products/categories", (req, res) => {
 	const query = "SELECT DISTINCT category FROM products";
 	db.all(query, (err, rows) => {
@@ -201,10 +219,6 @@ app.post("/customers/:customer_id/basket/:product_id", (req, res) => {
 			.json({ error: "customer_id and product_id are required" });
 	}
 
-	if (!db) {
-		return res.status(500).json({ error: "Database not yet initialized" });
-	}
-
 	db.run(query, [customer_id, product_id], function (err) {
 		if (err) {
 			console.error("Error creating updating basketEntry:", err.message);
@@ -244,20 +258,20 @@ app.get("/customers/:customer_id/basket/:product_id", (req, res) => {
 
 // DELETE /customers/:id/basket
 app.delete("/customers/:id/basket", (req, res) => {
-  const customerId = req.params.id;
-  const query = `
+	const customerId = req.params.id;
+	const query = `
     DELETE FROM basketEntries
     WHERE customer_id = ?
   `;
-  db.run(query, [customerId], function (err) {
-    if (err) {
-      console.error("Error emptying basket:", err.message);
-      return res.status(500).json({ error: "Internal server error" });
-    }
-    res.status(200).json({
-      message: `Deleted ${this.changes} item(s) from basket.`,
-    });
-  });
+	db.run(query, [customerId], function (err) {
+		if (err) {
+			console.error("Error emptying basket:", err.message);
+			return res.status(500).json({ error: "Internal server error" });
+		}
+		res.status(200).json({
+			message: `Deleted ${this.changes} item(s) from basket.`
+		});
+	});
 });
 
 app.delete("/customers/:customer_id/basket/:product_id", (req, res) => {
@@ -292,9 +306,6 @@ app.put("/customers/:customer_id/basket/:product_id", (req, res) => {
 		SET quantity = quantity - 1;
 	`;
 
-	// If you’d rather new rows start at 0, just use VALUES (?, ?, 0) instead
-	// and still do SET quantity = quantity - 1 in the ON CONFLICT clause.
-
 	if (!customer_id || !product_id) {
 		return res
 			.status(400)
@@ -320,7 +331,5 @@ app.put("/customers/:customer_id/basket/:product_id", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+	console.log(`Server is running on port ${PORT}`);
 });
-
-
