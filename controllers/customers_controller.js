@@ -1,19 +1,8 @@
-const express = require('express');
+const express = require("express");
 //Router is created (used for modular routing)
 const router = express.Router();
-const sqlite3 = require("sqlite3").verbose();
 
-const db = new sqlite3.Database("./db/database.db", (err) => {
-
-    if (err) {
-        console.error("Error connecting to database:", err.message);
-        process.exit(1);
-    }
-    // Enable foreign key constraints(This enable us to cascade-delete basket-items when deleting a customer)
-    db.run("PRAGMA foreign_keys = ON");
-
-    console.log("Connected to the SQLite database.");
-});
+const db = require("../db/connection.js");
 
 // Endpoint to get all customers
 router.get("/", (req, res) => {
