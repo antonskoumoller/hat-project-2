@@ -2,58 +2,56 @@ const express = require('express');
 //Router is created (used for modular routing)
 const router = express.Router();
 
-const db = require("../db/connection.js");
+const products = require("../models/products_model.js");
 
 //In general the relative paths are used (product not included)
 
 // Get all product categories 
-router.get("/categories", (req, res) => {
-	const query = "SELECT DISTINCT category FROM products";
-	db.all(query, (err, rows) => {
-		if (err) {
-			console.error("Error retrieving categories:", err.message);
-			return res.status(500).json({ error: "Internal server error" });
-		}
+router.get("/categories", async (req, res) => {
+	try{
+		const rows = await products.getAllCategories();
 		res.status(200).json(rows);
-	});
+	}
+	catch(err) {
+		console.error("Error retrieving categories:", err.message);
+		res.status(500).json({ error: "Internal server error" });
+	}
 });
 
 //Gets product with id "id"
-router.get("/:id", (req, res) => {
+router.get("/:id", async (req, res) => {
 	const product_id = req.params.id;
-	const query = "SELECT * FROM products WHERE id = ?";
-	//Check for case where data-base isn't load yet (unlikely)
-	if (!db) {
-		return res.status(500).json({ error: "Database not yet initialized" });
-	}
-	db.get(query, [product_id], (err, row) => {
-		if (err) {
-			//prints the string concatenated with the err.message (separated by space)
-			console.error("Error retrieving product:", err.message);
-			return res.status(500).json({ error: "Internal server error" });
-		}
-		//db.get returns undefined if no results
+	try{
+		const row = await products.getProductWithId(product_id);
+		//If no rows returned, send error-message and return
 		if (row === undefined) {
-			return res.status(404).json({ error: "No products found" });
+			res.status(404).json({ error: "No products found" });
+			return; 
 		}
 		res.status(200).json(row);
-	});
+	}
+	catch(err){
+		console.error("Error retrieving product:", err.message);
+		res.status(500).json({ error: "Internal server error" });
+	}
+
 });
 
 // Endpoint to get all products with category name
-router.get("/categories/:categoryName", (req, res) => {
+router.get("/categories/:categoryName", async (req, res) => {
 	const categoryName = req.params.categoryName;
-	const query = "SELECT * FROM products WHERE category = ?";
-	db.all(query, [categoryName], (err, rows) => {
-		if (err) {
-			console.error("Error retrieving category:", err.message);
-			return res.status(500).json({ error: "Internal server error" });
-		}
+	try{
+		const rows = await products.getCategory(categoryName);
 		if (rows.length === 0) {
-			return res.status(404).json({ error: "No products found" });
+			res.status(404).json({ error: "No products found" });
+			return; 
 		}
 		res.status(200).json(rows);
-	});
+	}
+	catch(err){
+		console.error("Error retrieving category", err.message);
+		res.status(500).json({ error: "Internal server error" });
+	}
 });
 
 //Export statement for the router (old notation conforming to require, so that conventions won't be mixed)
