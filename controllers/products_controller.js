@@ -1,13 +1,25 @@
-const express = require('express');
-//Router is created (used for modular routing)
-const router = express.Router();
-
 const products = require("../models/products_model.js");
 
 //In general the relative paths are used (product not included)
 
+// Endpoint to retrive all products
+async function getAllProducts (_req, res) {
+	try {	
+		const rows = await products.getAllProducts();
+		if (rows.length === 0) {
+			res.status(404).json({ error: "No products found" });
+			return;
+		}
+		res.status(200).json(rows);
+	} catch (err) {
+		console.error("Error retrieving products:", err.message);
+		res.status(500).json({ error: "Internal server error" });
+	}
+}
+
+
 // Get all product categories 
-router.get("/categories", async (req, res) => {
+async function getAllCategories (req, res) {
 	try{
 		const rows = await products.getAllCategories();
 		res.status(200).json(rows);
@@ -16,10 +28,10 @@ router.get("/categories", async (req, res) => {
 		console.error("Error retrieving categories:", err.message);
 		res.status(500).json({ error: "Internal server error" });
 	}
-});
+}
 
 //Gets product with id "id"
-router.get("/:id", async (req, res) => {
+async function getProductWithId (req, res) {
 	const product_id = req.params.id;
 	try{
 		const row = await products.getProductWithId(product_id);
@@ -35,10 +47,10 @@ router.get("/:id", async (req, res) => {
 		res.status(500).json({ error: "Internal server error" });
 	}
 
-});
+}
 
 // Endpoint to get all products with category name
-router.get("/categories/:categoryName", async (req, res) => {
+async function getCategory (req, res) {
 	const categoryName = req.params.categoryName;
 	try{
 		const rows = await products.getCategory(categoryName);
@@ -52,7 +64,9 @@ router.get("/categories/:categoryName", async (req, res) => {
 		console.error("Error retrieving category", err.message);
 		res.status(500).json({ error: "Internal server error" });
 	}
-});
+}
 
-//Export statement for the router (old notation conforming to require, so that conventions won't be mixed)
-module.exports = router;
+exports.getAllProducts = getAllProducts;
+exports.getAllCategories = getAllCategories;
+exports.getProductWithId = getProductWithId;
+exports.getCategory = getCategory;
