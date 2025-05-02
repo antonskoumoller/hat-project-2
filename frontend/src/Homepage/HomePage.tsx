@@ -3,10 +3,6 @@ import Carousel from "./Carousel";
 import { HatItem } from "./ItemCard";
 
 export default function HomePage() {
-	// Loadhats()
-	// Check if logged in? In App
-	// Get CarouselCards()
-
 	const [hats, setHats] = useState<HatItem[]>([]);
 
 	useEffect(() => {
@@ -34,9 +30,11 @@ export default function HomePage() {
 
 	return (
 		// <Navbar/>
-		<div className="p-6">
-			<h1 className="text-2xl font-bold mb-4">Popular Items</h1>
+		<div className="border rounded-md">
+			<h1 className="font-medium text-gray-500">Popular Items</h1>
 			<Carousel CarouselHats={hats} hatsPerSlide={3} />
 		</div>
 	);
 }
+
+//var(<custom-property>)

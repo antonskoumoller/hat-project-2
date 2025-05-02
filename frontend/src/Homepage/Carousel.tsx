@@ -45,7 +45,7 @@ export default function Carousel({
 					onClick={prevSlide}
 					className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
 				>
-					←
+					<img src="./leftIcon.png" alt="left icon" />
 				</button>
 				<button
 					onClick={nextSlide}
