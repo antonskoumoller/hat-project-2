@@ -1,13 +1,15 @@
 const express = require("express");
 const app = express();
-const productsRoute = require('./controllers/products_controller.js');
-const customersRoute = require('./controllers/customers_controller.js');
+const productsRoute = require('./routes/products_route.js');
+const categoriesRoute = require('./routes/categories_route.js');
+const customersRoute = require('./routes/customers_route.js');
 
 
 app.use(express.json());
-//For all prefixes /products, we use the imported productRoute
+//For given prefix, we use the given imported route
+//(categories listed before products for correct pattern-matching on paths)
+app.use('/products/categories',categoriesRoute);
 app.use('/products',productsRoute);
-//likewise for customers
 app.use('/customers',customersRoute);
 
 //catch-all route for wrong unspecified URL's
