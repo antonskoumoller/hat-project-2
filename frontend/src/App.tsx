@@ -2,6 +2,8 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Navbar } from "./components/navbar/Navbar";
 import ProductPage from "./pages/ProductPage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./Homepage/HomePage";
 
 function App() {
 	// const LoginContext = React.createContext<????>({????})

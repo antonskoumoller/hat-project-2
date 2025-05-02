@@ -1,62 +1,59 @@
 import React, { useState } from "react";
-import { Card } from "./Card";
+import ItemCard, { HatItem } from "./ItemCard";
 
 type CarouselProps = {
-	itemsPerSlide: number;
+	CarouselHats: HatItem[];
+	hatsPerSlide?: number;
 };
 
-export const Carousel = ({itemsPerSlide }: CarouselProps) => {
-	const [slides, setSlides] = useState<Hat[][]>([]);
+export default function Carousel({
+	CarouselHats,
+	hatsPerSlide = 3
+}: CarouselProps) {
 	const [currentIndex, setCurrentIndex] = useState(0);
 
-	// Fetching all the popular hat cards on mount (on render?)
-	const useEffect(()=> {
-		const hats: Hat[] = .getall
-	})
-	
-	
-	
-	
-	
-	
+	// ceil rounds up the number
+	const totalSlides = Math.ceil(CarouselHats.length / hatsPerSlide);
+
 	const prevSlide = () => {
-		setCurrentIndex((prev) =>
-			prev === 0 ? carouselItems.length - 1 : prev - 1
-		);
+		setCurrentIndex((prev) => (prev + 1) % totalSlides);
 	};
 
 	const nextSlide = () => {
-		setCurrentIndex((prev) =>
-			prev === carouselItems.length - 1 ? 0 : prev + 1
-		);
+		setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
 	};
 
+	// Slice current group of hats to show
+	const start = currentIndex * hatsPerSlide;
+	const currentHats = CarouselHats.slice(start, start + hatsPerSlide);
+
 	return (
-		<div className="relative w-full max-w-xl mx-auto overflow-hidden">
-			<div
-				className="flex transition-transform duration-500 ease-in-out"
-				style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-			>
-				{carouselItems.map((item, index) => (
-					<div key={index} className="w-full flex-shrink-0">
-						{item}
+		// max-w-xl mx-auto overflow-hidden"
+		<div className="relative w-full">
+			{/*Cards    (transition-transform duration-500 ease-in-out)*/}
+			<div className="flex justify-center gap-4 transition-all">
+				{currentHats.map((hat) => (
+					<div key={hat.id} className="flex-shrink-0">
+						<ItemCard hat={hat} />
 					</div>
 				))}
 			</div>
 
-			{/* Optional navigation */}
-			<button
-				onClick={prevSlide}
-				className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow"
-			>
-				←
-			</button>
-			<button
-				onClick={nextSlide}
-				className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white p-2 rounded-full shadow"
-			>
-				→
-			</button>
+			{/* Navigation Buttons */}
+			<div className="flex justify-between mt-4">
+				<button
+					onClick={prevSlide}
+					className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+				>
+					←
+				</button>
+				<button
+					onClick={nextSlide}
+					className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+				>
+					→
+				</button>
+			</div>
 		</div>
 	);
-};
+}
