@@ -1,27 +1,23 @@
-const express = require("express");
-//Router is created (used for modular routing)
-const router = express.Router();
 const customers = require("../models/customers_model.js");
 
 // Endpoint to get all customers
-router.get("/", async (req, res) => {
-	const query = "SELECT * FROM customers";
+async function getAllCustomers (_req, res) {
 	try{
 		const rows = await customers.getAllCustomers();
 		if (rows.length === 0) {
 			res.status(404).json({ error: "No customers in database" });
 			return; 
 		}
-		res.status(200).json(rows);
+		res.status(200).json(rows);										
 	}
 	catch(err) {
 		console.error("Error retrieving Customers:", err.message);
 		res.status(500).json({ error: "Internal server error" });
 	}
-});
+};
 
-//Endpoint to create a new customer (Maybe this should be the path to the login form ?)
-router.post("/", async (req, res) => {
+//Endpoint to create a new customer 
+async function insertCustomer (req, res) {
 	const { name, email, password } = req.body;
 	// Validate input
 	if (!name || !email || !password) {
@@ -37,10 +33,10 @@ router.post("/", async (req, res) => {
 		console.error("Error creating Customer:", err.message);
 		res.status(500).json({ error: "Internal server error" });
 	}
-});
+}
 
 // Endpoint to get customer with id
-router.get("/:id", async (req, res) => {
+async function getCustomerWithId (req, res) {
 	const customerId = req.params.id;
 	try{
 		let row = await customers.getCustomerWithId(customerId);
@@ -54,10 +50,10 @@ router.get("/:id", async (req, res) => {
 		console.error("Error retrieving Customer:", err.message);
 		res.status(500).json({ error: "Internal server error" });
 	}
-});
+}
 
 // Update customer with id
-router.put("/:id", async (req, res) => {
+async function updateCustomer(req, res) {
 	const customerId = req.params.id;
 	const { name, email, password } = req.body;
 
@@ -82,11 +78,11 @@ router.put("/:id", async (req, res) => {
 		console.error("Error updating Customer:", err.message);
 		res.status(500).json({ error: "Internal server error" });
 	}
-});
+}
 
 
 //Delete customer with id
-router.delete("/:id", async (req, res) => {
+async function deleteCustomerWithId (req, res) {
 	const customerId = req.params.id;
 	try{
 		const changed = await customers.deleteCustomerWithId(customerId);
@@ -104,10 +100,10 @@ router.delete("/:id", async (req, res) => {
 		res.status(500).json({ error: "Internal server error" });
 	}
 
-});
+}
 
 // GET /customers/:id/basket
-router.get("/:id/basket", async (req, res) => {
+async function getBasketWithId (req, res) {
   const customerId = req.params.id;
   try{
 	const basket = await customers.getBasketWithId(customerId);
@@ -117,11 +113,11 @@ router.get("/:id/basket", async (req, res) => {
 	console.error("Error retrieving basket:", err.message);
     res.status(500).json({ error: "Internal server error" });
   }
-});
+}
 
 
 //Adds product with id "product_id" to basket for customer with id "customer_id"
-router.post("/:customer_id/basket/:product_id", async (req, res) => {
+async function insertIntoBasket (req, res) {
 	const customer_id = req.params.customer_id;
 	const product_id = req.params.product_id;
 	if (!customer_id || !product_id) {
@@ -139,10 +135,10 @@ router.post("/:customer_id/basket/:product_id", async (req, res) => {
 		console.error("Error creating updating basketEntry:", err.message);
 		res.status(500).json({ error: "Internal server error" });
 	}
-});
+}
 
 // GET /customers/:id/basket
-router.get("/:customer_id/basket/:product_id", async (req, res) => {
+async function getQuantity (req, res) {
 	const customer_id = req.params.customer_id;
 	const product_id = req.params.product_id;
 	try{
@@ -159,10 +155,10 @@ router.get("/:customer_id/basket/:product_id", async (req, res) => {
 		console.error("Error retrieving quantity:", err.message);
 		res.status(500).json({ error: "Internal server error" });
 	}
-});
+}
 
 // DELETE /customers/:id/basket
-router.delete("/:id/basket", async (req, res) => {
+async function emptyBasket (req, res) {
   const customerId = req.params.id;
   try{
 	await customers.emptyBasket(customerId);
@@ -174,10 +170,10 @@ router.delete("/:id/basket", async (req, res) => {
 	console.error("Error emptying basket:", err.message);
     res.status(500).json({ error: "Internal server error" });
   }
-});
+}
 
 
-router.delete("/:customer_id/basket/:product_id", async (req, res) => {
+async function deleteProductFromBasket (req, res) {
 	const customer_id = req.params.customer_id;
 	const product_id = req.params.product_id;
 	try{
@@ -188,10 +184,10 @@ router.delete("/:customer_id/basket/:product_id", async (req, res) => {
 		console.error("Error deleting product from basket:", err.message);
 		res.status(500).json({ error: "Internal server error" });
 	}
-});
+}
 
 
-router.put("/:customer_id/basket/:product_id", async (req, res) => {
+async function deleteOneProductFromBasket (req, res) {
 	const customer_id = req.params.customer_id;
 	const product_id = req.params.product_id;
 	if (!customer_id || !product_id) {
@@ -210,6 +206,16 @@ router.put("/:customer_id/basket/:product_id", async (req, res) => {
 		console.error("Error updating basketEntry:", err.message);
 		res.status(500).json({ error: "Internal server error" });
 	}
-});
+}
 
-module.exports = router;
+exports.getAllCustomers = getAllCustomers;
+exports.insertCustomer = insertCustomer;
+exports.getCustomerWithId = getCustomerWithId;
+exports.updateCustomer = updateCustomer;
+exports.deleteCustomerWithId = deleteCustomerWithId;
+exports.getBasketWithId = getBasketWithId;
+exports.insertIntoBasket = insertIntoBasket;
+exports.getQuantity = getQuantity;
+exports.emptyBasket = emptyBasket;
+exports.deleteProductFromBasket = deleteProductFromBasket;
+exports.deleteOneProductFromBasket = deleteOneProductFromBasket;
