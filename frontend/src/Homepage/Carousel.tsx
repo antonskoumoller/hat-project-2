@@ -1,31 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ItemCard, { HatItem } from "./ItemCard";
 
 type CarouselProps = {
 	CarouselHats: HatItem[];
-	hatsPerSlide?: number;
+	hatsPerSlide?: number; // ??
 };
 
 export default function Carousel({
 	CarouselHats,
 	hatsPerSlide = 3
 }: CarouselProps) {
-	const [currentIndex, setCurrentIndex] = useState(0);
+	// State holding the index for the current slide
+	const [currentSlide, setCurrentSlide] = useState(0);
 
 	// ceil rounds up the number
-	const totalSlides = Math.ceil(CarouselHats.length / hatsPerSlide);
+	const numOfSlides = Math.ceil(CarouselHats.length / hatsPerSlide);
 
-	const prevSlide = () => {
-		setCurrentIndex((prev) => (prev + 1) % totalSlides);
-	};
+	// Slicing the current group of hats into slides
+	const startHat = currentSlide * hatsPerSlide;
+	// Array with the
+	const currentHats = CarouselHats.slice(startHat, startHat + hatsPerSlide);
 
-	const nextSlide = () => {
-		setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
-	};
+	// Change slide every 7. second
+	useEffect(() => {
+		const interval = setInterval(() => {
+			nextSlide();
+		}, 7000);
 
-	// Slice current group of hats to show
-	const start = currentIndex * hatsPerSlide;
-	const currentHats = CarouselHats.slice(start, start + hatsPerSlide);
+		// Clearing the timer when the component unmounts
+		return () => clearInterval(interval);
+	}, [currentSlide]);
+
+	// navigate to previous slide
+	function prevSlide() {
+		setCurrentSlide((prevSlide) =>
+			prevSlide <= 0 ? numOfSlides - 1 : prevSlide - 1
+		);
+	}
+
+	// navigate to next slide
+	function nextSlide() {
+		setCurrentSlide((prevSlide) =>
+			prevSlide >= numOfSlides - 1 ? 0 : prevSlide + 1
+		);
+	}
+
+	console.log(
+		"Index for current slide:",
+		currentSlide,
+		"start hat:",
+		startHat,
+		"currentHats:",
+		currentHats
+	);
+
+	console.log("CarouselHats length:", CarouselHats.length);
 
 	return (
 		// max-w-xl mx-auto overflow-hidden"
@@ -45,7 +74,7 @@ export default function Carousel({
 					onClick={prevSlide}
 					className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
 				>
-					<img src="./leftIcon.png" alt="left icon" />
+					<img src="/leftIcon.png" alt="left icon" />
 				</button>
 				<button
 					onClick={nextSlide}

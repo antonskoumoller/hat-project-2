@@ -22,6 +22,10 @@ export default function HomePage() {
 			{
 				id: 4,
 				name: "Hej jeg er hat 4"
+			},
+			{
+				id: 5,
+				name: "Hej jeg er hat 5"
 			}
 		];
 
