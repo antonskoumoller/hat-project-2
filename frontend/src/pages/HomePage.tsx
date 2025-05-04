@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Carousel from "./Carousel";
-import { HatItem } from "../../components/ItemCard";
+import Carousel from "../components/carousel/Carousel";
+import { HatItem } from "../components/ItemCard";
 
 export default function HomePage() {
 	const [popularHats, setPopularHats] = useState<HatItem[]>([]);
@@ -30,7 +30,7 @@ export default function HomePage() {
 				fullDescription:
 					"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 				category: "Fun",
-				popular: true,
+				popular: false,
 				price: 500,
 				brand: "Gucci"
 			},
@@ -66,7 +66,7 @@ export default function HomePage() {
 				fullDescription:
 					"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 				category: "Fun",
-				popular: true,
+				popular: false,
 				price: 500,
 				brand: "Gucci"
 			},
@@ -78,7 +78,7 @@ export default function HomePage() {
 				fullDescription:
 					"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 				category: "Fun",
-				popular: true,
+				popular: false,
 				price: 500,
 				brand: "Gucci"
 			},
@@ -90,7 +90,7 @@ export default function HomePage() {
 				fullDescription:
 					"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 				category: "Fun",
-				popular: true,
+				popular: false,
 				price: 500,
 				brand: "Gucci"
 			},
@@ -148,9 +148,19 @@ export default function HomePage() {
 
 	return (
 		// <Navbar/>
-		<div className="border rounded-md">
-			<h1 className="font-medium text-gray-500">Popular Items</h1>
-			<Carousel CarouselHats={popularHats} hatsPerSlide={3} />
+		<div className="flex justify-center items-center w-full">
+			<div className="w-full px-4 py-8 border rounded border-[#20c997] max-w-6xl">
+				<h2 className="text-gray-500 text-3xl text-left font-semibold mb-6 -mt-5">
+					Popular Items
+				</h2>
+				<Carousel CarouselHats={popularHats} hatsPerSlide={3} />
+			</div>
 		</div>
 	);
 }
+// "min-h-screen flex flex-col px-4 py-8 border rounded border-[#20c997]"
+// max-w-6-xl w-full px-4 py-8 border rounded border-[#20c997] flex flex-col items-center justify-center min-h-screen
+//  w-full relative flex border rounded border-[#20c997] pt-5
+// "max-w-6xl mx-auto px-4 py-8 border border-green-300 rounded-lg">
+// "absolute font-medium text-gray-500"
+// ="text-3xl font-semibold mb-6 border-b border-green-300 pb-2">Popular Items

@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Navbar } from "./components/navbar/Navbar";
 import ProductPage from "./pages/ProductPage";
-import HomePage from "./pages/Homepage/HomePage";
+import HomePage from "./pages/HomePage";
 
 function App() {
 	// const LoginContext = React.createContext<????>({????})
@@ -96,7 +96,7 @@ function App() {
 				}}
 			>
 				<Navbar />
-				<div style={{ padding: "20px" }}>
+				<div style={{ padding: "50px" }}>
 					<Routes>
 						<Route path="/" element={<HomePage />} />
 						<Route

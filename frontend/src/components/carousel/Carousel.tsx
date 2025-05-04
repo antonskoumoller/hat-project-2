@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
-import ItemCard, { HatItem } from "../../components/ItemCard";
+import ItemCard, { HatItem } from "../ItemCard";
+import RightArrowIcon from "./RightArrowIcon";
+import LeftArrowIcon from "./LeftArrowIcon";
 
+// export interface CarouselProps
 type CarouselProps = {
 	CarouselHats: HatItem[];
 	hatsPerSlide?: number; // ? is making the number of hatsPerSlide optional
@@ -20,15 +23,15 @@ export default function Carousel({
 	const startHat = currentSlide * hatsPerSlide;
 	const currentHats = CarouselHats.slice(startHat, startHat + hatsPerSlide);
 
-	// Setting up a timer to change slide every 7. second
-	useEffect(() => {
-		const interval = setInterval(() => {
-			nextSlide();
-		}, 7000);
+	// Setting up a timer to change slide every 5. second
+	// useEffect(() => {
+	// 	const interval = setInterval(() => {
+	// 		nextSlide();
+	// 	}, 5000);
 
-		// Clearing the timer when the component unmounts
-		return () => clearInterval(interval);
-	}, [currentSlide]);
+	// 	// Clearing the timer when the component unmounts
+	// 	return () => clearInterval(interval);
+	// }, [currentSlide]);
 
 	// navigate to previous slide
 	function prevSlide() {
@@ -57,8 +60,9 @@ export default function Carousel({
 
 	return (
 		// max-w-xl mx-auto overflow-hidden"
-		<div className="relative w-full">
-			{/*Cards    (transition-transform duration-500 ease-in-out)*/}
+		//relative w-full
+		<div>
+			{/*Cards    (transition-transform duration-500 ease-in-out) "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"*/}
 			<div className="flex justify-center gap-4 transition-all">
 				{currentHats.map((hat) => (
 					<div key={hat.id} className="flex-shrink-0">
@@ -67,19 +71,21 @@ export default function Carousel({
 				))}
 			</div>
 
-			{/* Navigation Buttons */}
-			<div className="flex justify-between mt-4">
+			{/* Navigation Buttons (styling fælles div med buttons nede)px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 */}
+			<div className="absolute left-0 top-1/2 transform -translate-y-1/2 p-2">
 				<button
 					onClick={prevSlide}
-					className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+					className="bg-transparent text-[#20c997] hover:text-[#17a085] text-3xl"
 				>
-					<img src="/leftIcon.png" alt="left icon" />
+					<LeftArrowIcon />
 				</button>
+			</div>
+			<div className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2">
 				<button
 					onClick={nextSlide}
-					className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+					className="bg-transparent text-[#20c997] hover:text-gray-500 text-3xl"
 				>
-					→
+					<RightArrowIcon />
 				</button>
 			</div>
 		</div>
