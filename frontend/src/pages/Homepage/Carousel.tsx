@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from "react";
-import ItemCard, { HatItem } from "./ItemCard";
+import ItemCard, { HatItem } from "../../components/ItemCard";
 
 type CarouselProps = {
 	CarouselHats: HatItem[];
-	hatsPerSlide?: number; // ??
+	hatsPerSlide?: number; // ? is making the number of hatsPerSlide optional
 };
 
 export default function Carousel({
 	CarouselHats,
-	hatsPerSlide = 3
+	hatsPerSlide = 3 // sets 3 hats pr slide as default
 }: CarouselProps) {
 	// State holding the index for the current slide
 	const [currentSlide, setCurrentSlide] = useState(0);
 
-	// ceil rounds up the number
+	// Finding the number of slides (ceil rounds up the number)
 	const numOfSlides = Math.ceil(CarouselHats.length / hatsPerSlide);
 
-	// Slicing the current group of hats into slides
+	// Slicing the array of hats into slides
 	const startHat = currentSlide * hatsPerSlide;
-	// Array with the
 	const currentHats = CarouselHats.slice(startHat, startHat + hatsPerSlide);
 
-	// Change slide every 7. second
+	// Setting up a timer to change slide every 7. second
 	useEffect(() => {
 		const interval = setInterval(() => {
 			nextSlide();
@@ -48,13 +47,13 @@ export default function Carousel({
 	console.log(
 		"Index for current slide:",
 		currentSlide,
-		"start hat:",
+		"Start hat:",
 		startHat,
-		"currentHats:",
-		currentHats
+		"CurrentHats:",
+		currentHats,
+		"CarouselHats length:",
+		CarouselHats.length
 	);
-
-	console.log("CarouselHats length:", CarouselHats.length);
 
 	return (
 		// max-w-xl mx-auto overflow-hidden"
