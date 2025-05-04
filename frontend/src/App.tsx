@@ -87,16 +87,9 @@ function App() {
 		// 	value={{ isLoggedIn: false, setIsLoggedIn: () => {} }}
 		// >}
 		<BrowserRouter>
-			<div
-				style={{
-					display: "flex",
-					flexDirection: "row",
-					width: "100vw",
-					height: "100vh"
-				}}
-			>
+			<div className="flex flex-col h-screen w-screen">
 				<Navbar />
-				<div style={{ padding: "50px" }}>
+				<div className="flex-grow py-10 overflow-auto">
 					<Routes>
 						<Route path="/" element={<HomePage />} />
 						<Route

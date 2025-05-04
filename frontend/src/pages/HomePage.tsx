@@ -147,9 +147,8 @@ export default function HomePage() {
 	}, []);
 
 	return (
-		// <Navbar/>
-		<div className="flex justify-center items-center w-full">
-			<div className="w-full px-4 py-8 border rounded border-[#20c997] max-w-6xl">
+		<div className="w-full h-full flex justify-center items-start overflow-auto px-4 py-8">
+			<div className="max-w-6xl w-full border rounded border-[#20c997] p-6">
 				<h2 className="text-gray-500 text-3xl text-left font-semibold mb-6 -mt-5">
 					Popular Items
 				</h2>
@@ -158,9 +157,4 @@ export default function HomePage() {
 		</div>
 	);
 }
-// "min-h-screen flex flex-col px-4 py-8 border rounded border-[#20c997]"
-// max-w-6-xl w-full px-4 py-8 border rounded border-[#20c997] flex flex-col items-center justify-center min-h-screen
-//  w-full relative flex border rounded border-[#20c997] pt-5
-// "max-w-6xl mx-auto px-4 py-8 border border-green-300 rounded-lg">
-// "absolute font-medium text-gray-500"
-// ="text-3xl font-semibold mb-6 border-b border-green-300 pb-2">Popular Items
+// div2: "flex-grow px-4 py-8 border rounded border-[#20c997] max-w-6xl"

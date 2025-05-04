@@ -59,13 +59,11 @@ export default function Carousel({
 	);
 
 	return (
-		// max-w-xl mx-auto overflow-hidden"
-		//relative w-full
 		<div>
-			{/*Cards    (transition-transform duration-500 ease-in-out) "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"*/}
+			{/*Cards*/}
 			<div className="flex justify-center gap-4 transition-all">
 				{currentHats.map((hat) => (
-					<div key={hat.id} className="flex-shrink-0">
+					<div key={hat.id} className="flex-grow">
 						<ItemCard hat={hat} />
 					</div>
 				))}
@@ -83,7 +81,7 @@ export default function Carousel({
 			<div className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2">
 				<button
 					onClick={nextSlide}
-					className="bg-transparent text-[#20c997] hover:text-gray-500 text-3xl"
+					className="bg-transparent text-[#20c997] hover:text-[#20c997] text-3xl"
 				>
 					<RightArrowIcon />
 				</button>
