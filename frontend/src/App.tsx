@@ -2,6 +2,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Navbar } from "./components/navbar/Navbar";
 import ProductPage from "./pages/ProductPage";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
 	// const LoginContext = React.createContext<????>({????})
@@ -67,7 +68,7 @@ function App() {
 							element={<ProductPage hats={testHats} />}
 						/>
 						{/* <Route path="/basket" element={<BasketPage />} /> */}
-						{/* <Route path="/login" element={<LoginPage />} /> */}
+						<Route path="/login" element={<LoginPage />} /> 
 						{/* <Route path="*" element={<HomePage />} /> */}
 					</Routes>
 				</div>
