@@ -23,15 +23,15 @@ export default function Carousel({
 	const startHat = currentSlide * hatsPerSlide;
 	const currentHats = CarouselHats.slice(startHat, startHat + hatsPerSlide);
 
-	// Setting up a timer to change slide every 5. second
-	// useEffect(() => {
-	// 	const interval = setInterval(() => {
-	// 		nextSlide();
-	// 	}, 5000);
+	// Setting up a timer to change slide every 10. second
+	useEffect(() => {
+		const interval = setInterval(() => {
+			nextSlide();
+		}, 10000);
 
-	// 	// Clearing the timer when the component unmounts
-	// 	return () => clearInterval(interval);
-	// }, [currentSlide]);
+		// Clearing the timer when the component rerenders
+		return () => clearInterval(interval);
+	}, [currentSlide]);
 
 	// navigate to previous slide
 	function prevSlide() {
