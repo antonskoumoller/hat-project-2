@@ -73,7 +73,7 @@ export default function Carousel({
 			<div className="absolute left-0 top-1/2 transform -translate-y-1/2 p-2">
 				<button
 					onClick={prevSlide}
-					className="bg-transparent text-[#20c997] hover:text-[#17a085] text-3xl"
+					className="bg-transparent text-[#20c997] hover:border-[#17a085] text-3xl"
 				>
 					<LeftArrowIcon />
 				</button>

@@ -87,21 +87,17 @@ function App() {
 		// 	value={{ isLoggedIn: false, setIsLoggedIn: () => {} }}
 		// >}
 		<BrowserRouter>
-			<div className="flex flex-col h-screen w-screen">
-				<Navbar />
-				<div className="flex-grow py-10 overflow-auto">
-					<Routes>
-						<Route path="/" element={<HomePage />} />
-						<Route
-							path="/product"
-							element={<ProductPage hats={testHats} />}
-						/>
-						{/* <Route path="/basket" element={<BasketPage />} /> */}
-						{/* <Route path="/login" element={<LoginPage />} /> */}
-						{/* <Route path="*" element={<HomePage />} /> */}
-					</Routes>
-				</div>
-			</div>
+			<Navbar />
+			<Routes>
+				<Route path="/" element={<HomePage />} />
+				<Route
+					path="/product"
+					element={<ProductPage hats={testHats} />}
+				/>
+				{/* <Route path="/basket" element={<BasketPage />} /> */}
+				{/* <Route path="/login" element={<LoginPage />} /> */}
+				{/* <Route path="*" element={<HomePage />} /> */}
+			</Routes>
 		</BrowserRouter>
 		// </LoginContext.Provider>
 	);
