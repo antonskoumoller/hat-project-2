@@ -4,6 +4,7 @@ import { Navbar } from "./components/navbar/Navbar";
 import ProductPage from "./pages/ProductPage";
 import HomePage from "./pages/HomePage";
 import BasketPage from "./pages/BasketPage";
+import LoginPage from "./pages/LoginPage";
 
 
 function App() {
@@ -98,7 +99,7 @@ function App() {
 				/>
 				<Route path="/basket" 
 					element={<BasketPage />} />
-				{/* <Route path="/login" element={<LoginPage />} /> */}
+				<Route path="/login" element={<LoginPage />} />
 				{/* <Route path="*" element={<HomePage />} /> */}
 			</Routes>
 		</BrowserRouter>
