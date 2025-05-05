@@ -1,4 +1,4 @@
-const customers = require("../../models/customers_model.js");
+const customers = require("../models/customers_model.js");
 
 // Endpoint to get all customers
 async function getAllCustomers(_req, res) {
