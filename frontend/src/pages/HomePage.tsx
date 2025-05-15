@@ -7,7 +7,7 @@ export default function HomePage() {
 
   // Async function that gets all hats using our endpoint
   async function fetchAllHats(): Promise<HatItem[]> {
-    const res = await fetch("http://localhost:3000/products");
+    const res = await fetch("http://localhost:3000/customer");
     if (!res.ok) throw new Error("Failed to retrieve hats");
     return res.json();
   }
