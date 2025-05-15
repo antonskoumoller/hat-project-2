@@ -43,9 +43,10 @@ export default function ProductPage({ hats }: Props) {
   });
 
   return (
+    
     <Box sx={{ flexGrow: 1, padding: 1 }}>
       {/* Filter are applied through dropdown menus */}
-      <Box sx={{ display: "flex", gap: 2, alignItems: "center", flexWrap: "wrap", marginBottom: 3 }}>
+      <Box sx={{ display: "flex", gap: 2, alignItems: "center", flexWrap: "wrap", marginBottom: 2  }}>
         <FormControl sx={{ minWidth: 200 }}>
           <InputLabel id="brand-select-label">Brands</InputLabel>
           <Select
@@ -55,10 +56,11 @@ export default function ProductPage({ hats }: Props) {
             onChange={(e) => setSelectedBrands(e.target.value as string[])}
             input={<OutlinedInput label="Brands" />}
             renderValue={(selected) => selected.join(", ")}
+            color="secondary"
           >
             {brands.map((brand) => (
               <MenuItem key={brand} value={brand}>
-                <Checkbox checked={selectedBrands.includes(brand)} />
+                <Checkbox checked={selectedBrands.includes(brand)} color="primary" />
                 <ListItemText primary={brand} />
               </MenuItem>
             ))}
