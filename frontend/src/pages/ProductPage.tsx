@@ -10,7 +10,6 @@ import {
   Checkbox,
   ListItemText,
   OutlinedInput,
-  Button
 } from "@mui/material";
 import ItemCard from "../components/ItemCard";
 
@@ -44,7 +43,7 @@ export default function ProductPage({ hats }: Props) {
   });
 
   return (
-    <Box sx={{ flexGrow: 1, padding: 2 }}>
+    <Box sx={{ flexGrow: 1, padding: 1 }}>
       {/* Filter are applied through dropdown menus */}
       <Box sx={{ display: "flex", gap: 2, alignItems: "center", flexWrap: "wrap", marginBottom: 3 }}>
         <FormControl sx={{ minWidth: 200 }}>
@@ -85,9 +84,9 @@ export default function ProductPage({ hats }: Props) {
           </Select>
         </FormControl>
 
-        <Button onClick={clearFilters} variant="outlined">
+        <button className="px-4 py-2 border border-[#20c997] text-[#20c997] rounded-md hover:bg-[#20c997] hover:text-[#79dfc1] hover:border-[#79dfc1] transition" onClick={clearFilters}>
           Clear Filters
-        </Button>
+        </button>
       </Box>
 
       {/* Products */}

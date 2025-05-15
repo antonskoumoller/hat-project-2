@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Button,
   Card,
   CardActions,
   CardContent,
@@ -41,6 +40,7 @@ export default function ItemCard({ hat }: Props) {
             flexDirection: "column",
             maxWidth: 345,
             height: "100%", // allow full-height layout if inside a grid or container
+            border: "border border-[#20c997]"
           }}
         >
           <CardMedia
@@ -58,13 +58,15 @@ export default function ItemCard({ hat }: Props) {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" onClick={() => setOverlayActive(true)}>
+            <button className="flex-1 py-2 border border-[#20c997] text-[#20c997] rounded-md hover:bg-[#20c997] hover:text-[#79dfc1] hover:border-[#79dfc1] transition" onClick={() => setOverlayActive(true)}>
               Show hat
-            </Button>
-            <Button size="small">Add to cart</Button>
+            </button>
+            <button className="flex-1 py-2 border border-[#20c997] text-[#20c997] rounded-md hover:bg-[#20c997] hover:text-[#79dfc1] hover:border-[#79dfc1] transition">Add to cart</button>
           </CardActions>
         </Card>
+        
       )}
     </>
+    
   );
 }
