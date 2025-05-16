@@ -1,5 +1,8 @@
 import * as React from "react";
 import type { HatItem } from "../components/ItemCard";
+import ItemCard from "../components/ItemCard";
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '../theme';
 import {
   Box,
   Grid,
@@ -10,20 +13,20 @@ import {
   Checkbox,
   ListItemText,
   OutlinedInput,
-  Button
 } from "@mui/material";
-import ItemCard from "../components/ItemCard";
+//import ItemCard from "../components/ItemCard";
+
 
 type HatItems = HatItem[];
 
-type Props = {
-  hats: HatItems;
-};
+// type Props = {
+//   hats: HatItems;
+// };
+// { hats }: Props
 
+const hats: HatItems = await fetch('http://localhost:3000/products').then(res => res.json());
 
-//const hats: HatItems = await fetch('http://localhost:3000/products').then(res => res.json());
-
-export default function ProductPage({ hats }: Props) {
+export default function ProductPage() {
   {/* Set up the useStates for filtering functionality, initially load all products (no filters)*/}
   const [selectedBrands, setSelectedBrands] = React.useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = React.useState<string[]>([]);
@@ -44,9 +47,12 @@ export default function ProductPage({ hats }: Props) {
   });
 
   return (
-    <Box sx={{ flexGrow: 1, padding: 2 }}>
+    
+    <Box sx={{ flexGrow: 1, padding: 1 }}>
       {/* Filter are applied through dropdown menus */}
-      <Box sx={{ display: "flex", gap: 2, alignItems: "center", flexWrap: "wrap", marginBottom: 3 }}>
+      <h1>Add filters</h1>
+      <Box sx={{ display: "flex", gap: 2, alignItems: "center", flexWrap: "wrap", marginBottom: 2  }}>
+      <ThemeProvider theme={theme}>
         <FormControl sx={{ minWidth: 200 }}>
           <InputLabel id="brand-select-label">Brands</InputLabel>
           <Select
@@ -56,10 +62,11 @@ export default function ProductPage({ hats }: Props) {
             onChange={(e) => setSelectedBrands(e.target.value as string[])}
             input={<OutlinedInput label="Brands" />}
             renderValue={(selected) => selected.join(", ")}
+            color="secondary"
           >
             {brands.map((brand) => (
               <MenuItem key={brand} value={brand}>
-                <Checkbox checked={selectedBrands.includes(brand)} />
+                <Checkbox checked={selectedBrands.includes(brand)} color="primary" />
                 <ListItemText primary={brand} />
               </MenuItem>
             ))}
@@ -84,13 +91,14 @@ export default function ProductPage({ hats }: Props) {
             ))}
           </Select>
         </FormControl>
-
-        <Button onClick={clearFilters} variant="outlined">
+        </ThemeProvider>
+        <button className="px-4 py-2 border border-[#20c997] text-[#20c997] rounded-md hover:bg-[#20c997] hover:text-[#79dfc1] hover:border-[#79dfc1] transition" onClick={clearFilters}>
           Clear Filters
-        </Button>
+        </button>
       </Box>
 
       {/* Products */}
+      <h1>Products</h1>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {filteredHats.map((hat) => (
           <Grid size={4}>
