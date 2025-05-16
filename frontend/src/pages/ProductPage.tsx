@@ -1,5 +1,7 @@
 import * as React from "react";
 import type { HatItem } from "../components/ItemCard";
+import ItemCard2 from "../components/ItemCard2";
+
 import {
   Box,
   Grid,
@@ -11,18 +13,19 @@ import {
   ListItemText,
   OutlinedInput,
 } from "@mui/material";
-import ItemCard from "../components/ItemCard";
+//import ItemCard from "../components/ItemCard";
+
 
 type HatItems = HatItem[];
 
-type Props = {
-  hats: HatItems;
-};
+// type Props = {
+//   hats: HatItems;
+// };
+// { hats }: Props
 
+const hats: HatItems = await fetch('http://localhost:3000/products').then(res => res.json());
 
-//const hats: HatItems = await fetch('http://localhost:3000/products').then(res => res.json());
-
-export default function ProductPage({ hats }: Props) {
+export default function ProductPage() {
   {/* Set up the useStates for filtering functionality, initially load all products (no filters)*/}
   const [selectedBrands, setSelectedBrands] = React.useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = React.useState<string[]>([]);
@@ -95,7 +98,7 @@ export default function ProductPage({ hats }: Props) {
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {filteredHats.map((hat) => (
           <Grid size={4}>
-            <ItemCard hat={hat} />
+            <ItemCard2 hat={hat} />
           </Grid>
         ))}
       </Grid>
