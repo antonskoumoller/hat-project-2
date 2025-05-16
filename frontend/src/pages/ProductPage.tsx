@@ -1,7 +1,8 @@
 import * as React from "react";
 import type { HatItem } from "../components/ItemCard";
-import ItemCard2 from "../components/ItemCard2";
-
+import ItemCard from "../components/ItemCard";
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '../theme';
 import {
   Box,
   Grid,
@@ -49,7 +50,9 @@ export default function ProductPage() {
     
     <Box sx={{ flexGrow: 1, padding: 1 }}>
       {/* Filter are applied through dropdown menus */}
+      <h1>Add filters</h1>
       <Box sx={{ display: "flex", gap: 2, alignItems: "center", flexWrap: "wrap", marginBottom: 2  }}>
+      <ThemeProvider theme={theme}>
         <FormControl sx={{ minWidth: 200 }}>
           <InputLabel id="brand-select-label">Brands</InputLabel>
           <Select
@@ -88,17 +91,18 @@ export default function ProductPage() {
             ))}
           </Select>
         </FormControl>
-
+        </ThemeProvider>
         <button className="px-4 py-2 border border-[#20c997] text-[#20c997] rounded-md hover:bg-[#20c997] hover:text-[#79dfc1] hover:border-[#79dfc1] transition" onClick={clearFilters}>
           Clear Filters
         </button>
       </Box>
 
       {/* Products */}
+      <h1>Products</h1>
       <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {filteredHats.map((hat) => (
           <Grid size={4}>
-            <ItemCard2 hat={hat} />
+            <ItemCard hat={hat} />
           </Grid>
         ))}
       </Grid>
