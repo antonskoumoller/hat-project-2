@@ -16,6 +16,7 @@
     "@tailwindcss/vite": "^4.1.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
     "react-router-dom": "^7.5.3"
   },
   "devDependencies": {
@@ -32,8 +33,28 @@
     "globals": "^16.0.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.6",
+    "prettier": "^3.5.3",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.26.1",
     "vite": "^6.3.1"
+  },
+  "prettier": {
+    "useTabs": true,
+    "tabWidth": 4,
+    "singleQuote": false,
+    "semi": true,
+    "trailingComma": "none",
+    "bracketSpacing": true,
+    "arrowParens": "always"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,md}": [
+      "prettier --write"
+    ]
   }
 }
