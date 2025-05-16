@@ -66,3 +66,4 @@ export default function ItemCard({ hat }: Props) {
 		</>
 	);
 }
+

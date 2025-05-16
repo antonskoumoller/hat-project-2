@@ -7,6 +7,7 @@ import BasketPage from "./pages/BasketPage";
 import LoginPage from "./pages/LoginPage";
 import { BasketProvider } from "./context/BasketContext";
 import { LoginProvider } from "./context/LoginContext";
+=======
 
 function App() {
 	return (
