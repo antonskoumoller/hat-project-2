@@ -1,26 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
+import { useBasket } from "../../context/BasketContext";
 import { FaRegSquarePlus } from "react-icons/fa6";
 import { FaRegSquareMinus } from "react-icons/fa6";
+import type { HatItem } from "../ItemCard";
 
-export type BasketItemProps = {
-	customer_id: number;
-	product_id: number;
+export type BasketItemProps = HatItem & {
 	quantity: number;
-	id: number;
-	name: string;
-	img: string;
-	description: string;
-	fullDescription: string;
-	category: string;
-	popular: number;
-	price: number;
-	brand: string;
+	customer_id: number;
 };
 
-type Props = BasketItemProps & {
-	onDelete: (productId: number) => void;
-	onQuantityChange: (productId: number, newQuantity: number) => void;
-};
+// TODO: Make clicking the button show the product overlay on the BasketPage.tsx
 
 function Counter({
 	value,
@@ -45,93 +34,8 @@ function Counter({
 	);
 }
 
-export default function BasketItem({
-	onDelete,
-	onQuantityChange,
-	...basketItem
-}: Props) {
-	const [quantity, setQuantity] = useState(basketItem.quantity);
-
-	async function incrementHatInBasket() {
-		try {
-			const res = await fetch(
-				`http://localhost:3000/customers/${basketItem.customer_id}/basket/${basketItem.id}`,
-				{
-					method: "POST"
-				}
-			);
-			if (!res.ok) {
-				throw new Error("Failed to add hat to basket");
-			}
-			setQuantity((prev) => {
-				const updated = prev + 1;
-				onQuantityChange(basketItem.id, updated); // notify parent
-				return updated;
-			});
-			const result = await res.text();
-			console.log(result);
-		} catch (err) {
-			console.error("Error adding hat to basket: ", err);
-		}
-	}
-
-	async function decrementHatInBasket() {
-		const customerId = basketItem.customer_id;
-		const productId = basketItem.id;
-
-		if (quantity === 1) {
-			await deleteBasketItemCompletely(customerId, productId);
-			return;
-		}
-
-		await decrementBasketItemQuantity(customerId, productId);
-	}
-
-	async function deleteBasketItemCompletely(
-		customerId: number,
-		productId: number
-	) {
-		try {
-			const res = await fetch(
-				`http://localhost:3000/customers/${customerId}/basket/${productId}`,
-				{ method: "DELETE" }
-			);
-
-			if (!res.ok) {
-				throw new Error("Failed to delete item from basket");
-			}
-
-			onDelete(productId); // Tell parent to remove it from state
-		} catch (err) {
-			console.error("Error deleting item:", err);
-		}
-	}
-
-	async function decrementBasketItemQuantity(
-		customerId: number,
-		productId: number
-	) {
-		try {
-			const res = await fetch(
-				`http://localhost:3000/customers/${customerId}/basket/${productId}`,
-				{
-					method: "PUT"
-				}
-			);
-			if (!res.ok) {
-				throw new Error("Failed to remove hat from basket");
-			}
-			setQuantity((prev) => {
-				const updated = prev - 1;
-				onQuantityChange(basketItem.id, updated); // notify parent
-				return updated;
-			});
-			const result = await res.text();
-			console.log(result);
-		} catch (err) {
-			console.error("Error removing hat from basket:", err);
-		}
-	}
+export default function BasketItem(basketItem: BasketItemProps) {
+	const { addItem, removeItem } = useBasket();
 
 	return (
 		<div className="flex gap-5 border rounded-2xl border-teal-200 justify-between items-start mb-5 p-2">
@@ -153,14 +57,14 @@ export default function BasketItem({
 
 			<div className="basis-2/12 grow flex self-center justify-center">
 				<Counter
-					value={quantity}
-					onIncrement={incrementHatInBasket}
-					onDecrement={decrementHatInBasket}
+					value={basketItem.quantity}
+					onIncrement={() => addItem(basketItem)}
+					onDecrement={() => removeItem(basketItem.id)}
 				/>
 			</div>
 
 			<div className="basis-2/12 grow flex self-center justify-center text-xl font-bold">
-				<p>{basketItem.price * quantity} kr</p>
+				<p>{basketItem.price * basketItem.quantity} kr</p>
 			</div>
 		</div>
 	);
