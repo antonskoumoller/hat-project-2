@@ -58,7 +58,7 @@ export default function Carousel({
 		if (!isOverlayActive) {
 			const timer = setInterval(() => {
 				nextSlide();
-			}, 3000);
+			}, 7000);
 
 			// Clearing the timer when the component rerenders
 			return () => clearInterval(timer);
@@ -66,11 +66,11 @@ export default function Carousel({
 	}, [isOverlayActive]);
 
 	return (
-		<div>
+		<div className="w-full max-w-6xl mx-auto h-3/4">
 			{/*Cards*/}
-			<div className="flex justify-center gap-4 transition-all">
+			<div className="flex justify-center gap-6 h-full">
 				{currentHats.map((hat) => (
-					<div key={hat.id} className="flex-grow">
+					<div key={hat.id} className="w-80 h-full">
 						<ItemCard
 							hat={hat}
 							overlayStatus={(isOpen) =>

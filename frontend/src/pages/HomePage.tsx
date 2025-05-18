@@ -19,7 +19,7 @@ export default function HomePage() {
 	}, []);
 
 	return (
-		<div className="w-full h-full flex justify-center p-8">
+		<div className="w-full h-full p-8">
 			<div className="w-full h-3/4 border rounded-lg border-[#20c997] pt-14 pr-14 pl-14 pb-16">
 				<h2 className="text-gray-500 text-3xl text-left font-semibold mb-6 -mt-5">
 					Popular Items
