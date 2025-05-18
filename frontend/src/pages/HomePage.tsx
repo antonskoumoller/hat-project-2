@@ -1,19 +1,18 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import Carousel from "../components/carousel/Carousel";
 import { HatItem } from "../components/ItemCard";
 
 export default function HomePage() {
-	const [popularHats, setPopularHats] = React.useState<HatItem[]>([]);
+	const [popularHats, setPopularHats] = useState<HatItem[]>([]);
 
-	// Async function that gets all hats using our endpoint
+	// Async function that fetch all hats using endpoint
 	async function fetchAllHats(): Promise<HatItem[]> {
 		const res = await fetch("http://localhost:3000/products");
 		if (!res.ok) throw new Error("Failed to retrieve hats");
 		return res.json();
 	}
 
-	// UseEffect to set up all the popular hats when the component mounts
-	React.useEffect(() => {
+	useEffect(() => {
 		fetchAllHats()
 			.then((hats) => setPopularHats(hats.filter((hat) => hat.popular)))
 			.catch((error) => console.error("Failed to fetch hats:", error));
