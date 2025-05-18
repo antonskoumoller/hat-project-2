@@ -2,9 +2,10 @@ import BasketItem from "./BasketItem";
 import { BsShopWindow } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useBasket } from "../../context/BasketContext";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 export default function Basket() {
-	const { items, totalPrice } = useBasket();
+	const { items, totalPrice, clearBasket } = useBasket();
 	const navigate = useNavigate();
 
 	return (
@@ -22,12 +23,18 @@ export default function Basket() {
 			</div>
 
 			<div className="flex gap-5 justify-between mb-2 p-2">
-				<div className="basis-10/12 grow text-left inline">
+				<div className="basis-10/12 grow text-left flex gap-4">
 					<button
 						className="flex items-center gap-2 bg-teal-300 p-4 rounded-lg hover:bg-teal-200"
 						onClick={() => navigate("/product")}
 					>
 						<BsShopWindow /> Continue shopping
+					</button>
+					<button
+						className="flex items-center gap-2 bg-amber-600 p-4 rounded-lg hover:bg-amber-200"
+						onClick={() => clearBasket()}
+					>
+						<FaRegTrashAlt /> Clear Basket
 					</button>
 				</div>
 				<div className="basis-2/12 grow self-center justify-center">
