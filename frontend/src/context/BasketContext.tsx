@@ -7,15 +7,26 @@ type BasketContextType = {
 	items: BasketItemProps[];
 	totalPrice: number;
 	addItem: (hat: HatItem) => void;
-	updateQuantity: (productId: number, newQty: number) => void;
-	removeItem: (productId: number) => void;
+	removeItem: (hat: HatItem) => void;
 	clearBasket: () => void;
 };
 
 const BasketContext = createContext<BasketContextType | undefined>(undefined);
 
 export function BasketProvider({ children }: { children: React.ReactNode }) {
-	const [items, setItems] = useState<BasketItemProps[]>([]);
+	const [items, setItems] = useState<BasketItemProps[]>(() => {
+		if (typeof window === "undefined") return [];
+		const stored = localStorage.getItem("guest_basket");
+		if (stored) {
+			try {
+				return JSON.parse(stored);
+			} catch {
+				return [];
+			}
+		}
+		return [];
+	});
+
 	const [totalPrice, setTotalPrice] = useState<number>(0);
 	const { isLoggedIn, user } = useLogin();
 
@@ -29,74 +40,135 @@ export function BasketProvider({ children }: { children: React.ReactNode }) {
 	}, [isLoggedIn, user?.id]);
 
 	useEffect(() => {
+		if (!isLoggedIn) {
+			const stored = localStorage.getItem("guest_basket");
+			if (stored) {
+				try {
+					const parsed = JSON.parse(stored);
+					setItems(parsed);
+				} catch (err) {
+					console.error("Invalid basket in localStorage:", err);
+				}
+			}
+		}
+	}, [isLoggedIn]);
+
+	useEffect(() => {
+		if (!isLoggedIn) {
+			localStorage.setItem("guest_basket", JSON.stringify(items));
+		}
+	}, [items, isLoggedIn]);
+
+	useEffect(() => {
+		if (isLoggedIn) {
+			localStorage.removeItem("guest_basket");
+		}
+	}, [isLoggedIn]);
+
+	useEffect(() => {
 		const total = items.reduce(
 			(sum, item) => sum + item.price * item.quantity,
 			0
 		);
 		setTotalPrice(total);
 	}, [items]);
-
-	async function incrementHatInBasket(hat: HatItem) {
-		try {
-			const res = await fetch(
-				`http://localhost:3000/customers/${user?.id}/basket/${hat.id}`,
-				{
-					method: "POST"
-				}
-			);
-			if (!res.ok) {
-				throw new Error("Failed to add hat to basket");
-			}
-			const result = await res.text();
-			console.log(result);
-		} catch (err) {
-			console.error("Error adding hat to basket: ", err);
-		}
-	}
-
+	// Add or increment item
 	function addItem(hat: HatItem) {
 		setItems((prev) => {
-			if (isLoggedIn) incrementHatInBasket(hat);
-			// Sync with DB if user is logged in
-			// TODO: Wrap in try catch to do it safely
-
 			const existing = prev.find((i) => i.id === hat.id);
 			if (existing) {
 				const updated = prev.map((i) =>
 					i.id === hat.id ? { ...i, quantity: i.quantity + 1 } : i
 				);
 
+				if (isLoggedIn && user?.id) {
+					fetch(
+						`http://localhost:3000/customers/${user.id}/basket/${hat.id}`,
+						{
+							method: "POST"
+						}
+					).catch((err) =>
+						console.error("Error incrementing basket item:", err)
+					);
+				}
+
 				return updated;
 			}
 
 			const newItem: BasketItemProps = {
 				...hat,
-				//If logged in is true I KNOW there is a user from the LoginContextType. Therefore I can user!
 				customer_id: isLoggedIn ? user!.id : 0,
 				quantity: 1
 			};
+
+			if (isLoggedIn && user?.id) {
+				fetch(
+					`http://localhost:3000/customers/${user.id}/basket/${hat.id}`,
+					{
+						method: "POST"
+					}
+				).catch((err) =>
+					console.error("Error adding new item to basket:", err)
+				);
+			}
 
 			return [...prev, newItem];
 		});
 	}
 
-	function updateQuantity(productId: number, newQty: number) {
+	function removeItem(hat: HatItem) {
+		const basketItem = items.find((i) => i.id === hat.id);
+		if (!basketItem) return;
+
+		const newQuantity = basketItem.quantity - 1;
+
+		if (newQuantity === 0) {
+			// Update local state
+			setItems((prev) => prev.filter((i) => i.id !== hat.id));
+
+			// If logged in, delete item from backend
+			if (isLoggedIn && user?.id) {
+				fetch(
+					`http://localhost:3000/customers/${user.id}/basket/${hat.id}`,
+					{
+						method: "DELETE"
+					}
+				).catch((err) =>
+					console.error("Error deleting from basket:", err)
+				);
+			}
+
+			return;
+		}
+
+		// Decrease quantity locally
 		setItems((prev) =>
 			prev.map((i) =>
-				i.id === productId ? { ...i, quantity: newQty } : i
+				i.id === hat.id ? { ...i, quantity: newQuantity } : i
 			)
 		);
-		// if logged in do same for db
-	}
 
-	function removeItem(productId: number) {
-		setItems((prev) => prev.filter((i) => i.id !== productId));
-		// if logged in do same for db
+		// Sync to backend if logged in
+		if (isLoggedIn && user?.id) {
+			fetch(
+				`http://localhost:3000/customers/${user.id}/basket/${hat.id}`,
+				{
+					method: "PUT"
+				}
+			).catch((err) =>
+				console.error("Error decrementing basket item:", err)
+			);
+		}
 	}
 
 	function clearBasket() {
 		setItems([]);
-		// Delete database basket for logged in user
+
+		if (isLoggedIn && user?.id) {
+			fetch(`http://localhost:3000/customers/${user.id}/basket`, {
+				method: "DELETE"
+			}).catch((err) => console.error("Error clearing basket:", err));
+		}
 	}
 
 	return (
@@ -105,7 +177,6 @@ export function BasketProvider({ children }: { children: React.ReactNode }) {
 				items,
 				totalPrice,
 				addItem,
-				updateQuantity,
 				removeItem,
 				clearBasket
 			}}
