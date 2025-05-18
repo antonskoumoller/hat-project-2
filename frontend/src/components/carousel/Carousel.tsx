@@ -81,19 +81,19 @@ export default function Carousel({
 				))}
 			</div>
 
-			{/* Navigation Buttons (styling fælles div med buttons nede)px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 */}
-			<div className="absolute left-15 top-1/2 transform -translate-y-1/2 p-2">
-				<SlArrowLeft
-					onClick={prevSlide}
-					className="text-teal-500 w-6 h-6 hover:text-teal-200"
-				/>
-			</div>
-			<div className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2">
-				<SlArrowRight
-					onClick={nextSlide}
-					className="text-teal-500 w-6 h-6 hover:text-teal-200"
-				/>
-			</div>
+			{/* Navigation Buttons*/}
+			<button
+				onClick={prevSlide}
+				className="absolute left-18 top-1/2 p-5"
+			>
+				<SlArrowLeft className="text-teal-500 w-6 h-6 hover:text-teal-200" />
+			</button>
+			<button
+				onClick={nextSlide}
+				className="absolute right-18 top-1/2  p-5"
+			>
+				<SlArrowRight className="text-teal-500 w-6 h-6 hover:text-teal-200" />
+			</button>
 		</div>
 	);
 }
