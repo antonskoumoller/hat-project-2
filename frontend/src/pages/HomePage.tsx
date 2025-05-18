@@ -19,8 +19,8 @@ export default function HomePage() {
 	}, []);
 
 	return (
-		<div className="w-full h-full flex justify-center items-start overflow-auto px-4 py-8">
-			<div className="max-w-6xl w-full border rounded border-[#20c997] p-6">
+		<div className="w-full h-full flex justify-center p-8">
+			<div className="w-full h-3/4 border rounded-lg border-[#20c997] pt-14 pr-14 pl-14 pb-16">
 				<h2 className="text-gray-500 text-3xl text-left font-semibold mb-6 -mt-5">
 					Popular Items
 				</h2>
@@ -29,4 +29,3 @@ export default function HomePage() {
 		</div>
 	);
 }
-// div2: "flex-grow px-4 py-8 border rounded border-[#20c997] max-w-6xl"
