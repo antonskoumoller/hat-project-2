@@ -12,9 +12,27 @@ export default function Carousel({
 	CarouselHats,
 	hatsPerSlide
 }: CarouselProps) {
-	// useStates, one holding the index for the current slide and one holding the state of overlay
+	// useStates, one holding the index for the current slide and one holding the id of hat-item opened in the overlay
 	const [currentSlide, setCurrentSlide] = useState(0);
-	const [overlayOpen, setOverlayOpen] = useState(false);
+	const [openOverlayIds, setOpenOverlayIds] = useState<Set<number>>(
+		new Set()
+	);
+
+	// Checking if any overlays is active
+	const isOverlayActive = openOverlayIds.size > 0;
+
+	// Handling changes in overlay
+	const handleOverlayChange = (id: number, isOpen: boolean) => {
+		setOpenOverlayIds((prev) => {
+			const updated = new Set(prev);
+			if (isOpen) {
+				updated.add(id);
+			} else {
+				updated.delete(id);
+			}
+			return updated;
+		});
+	};
 
 	// Creating slides for the carousel
 	const numOfSlides = Math.ceil(CarouselHats.length / hatsPerSlide);
@@ -37,14 +55,14 @@ export default function Carousel({
 
 	// Setting up a timer to change slide every 7. second
 	useEffect(() => {
-		if (overlayOpen) return;
+		if (isOverlayActive) return;
 		const timer = setInterval(() => {
 			nextSlide();
-		}, 7000);
+		}, 3000);
 
 		// Clearing the timer when the component rerenders
 		return () => clearInterval(timer);
-	}, [currentSlide, overlayOpen]);
+	}, [currentSlide, isOverlayActive]);
 
 	return (
 		<div>
@@ -52,13 +70,18 @@ export default function Carousel({
 			<div className="flex justify-center gap-4 transition-all">
 				{currentHats.map((hat) => (
 					<div key={hat.id} className="flex-grow">
-						<ItemCard hat={hat} />
+						<ItemCard
+							hat={hat}
+							overlayStatus={(isOpen) =>
+								handleOverlayChange(hat.id, isOpen)
+							}
+						/>
 					</div>
 				))}
 			</div>
 
 			{/* Navigation Buttons (styling fælles div med buttons nede)px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 */}
-			<div className="absolute left-0 top-1/2 transform -translate-y-1/2 p-2">
+			<div className="absolute left-15 top-1/2 transform -translate-y-1/2 p-2">
 				<SlArrowLeft
 					onClick={prevSlide}
 					className="text-teal-500 w-6 h-6 hover:text-teal-200"
