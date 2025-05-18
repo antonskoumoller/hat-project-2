@@ -1,4 +1,3 @@
-import React from "react";
 import Basket from "../components/basket/Basket";
 
 export default function BasketPage() {
