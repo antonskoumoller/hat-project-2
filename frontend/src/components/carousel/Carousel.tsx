@@ -55,14 +55,15 @@ export default function Carousel({
 
 	// Setting up a timer to change slide every 7. second
 	useEffect(() => {
-		if (isOverlayActive) return;
-		const timer = setInterval(() => {
-			nextSlide();
-		}, 3000);
+		if (!isOverlayActive) {
+			const timer = setInterval(() => {
+				nextSlide();
+			}, 3000);
 
-		// Clearing the timer when the component rerenders
-		return () => clearInterval(timer);
-	}, [currentSlide, isOverlayActive]);
+			// Clearing the timer when the component rerenders
+			return () => clearInterval(timer);
+		}
+	}, [isOverlayActive]);
 
 	return (
 		<div>
