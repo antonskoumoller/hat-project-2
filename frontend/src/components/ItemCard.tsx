@@ -26,7 +26,7 @@ export default function ItemCard({ hat, overlayStatus }: Props) {
 		addItem({ ...hat });
 	}
 
-	// useEffect that (using callback) updates the carousel if the state of overlayActive changes
+	// useEffect that (via callback) updates the carousel if the state of overlayActive changes
 	React.useEffect(() => {
 		if (overlayStatus) {
 			overlayStatus(overlayActive);
@@ -41,7 +41,7 @@ export default function ItemCard({ hat, overlayStatus }: Props) {
 					onClose={() => setOverlayActive(false)}
 				/>
 			) : (
-				<div className="flex flex-col max-w-sm w-full border border-[#20c997] rounded-xl overflow-hidden shadow-md transition hover:shadow-lg">
+				<div className="flex flex-col max-w-sm w-full border border-[#20c997] rounded-xl overflow-hidden shadow-md transition hover:shadow-lg pt-4">
 					<img
 						src={hat.img}
 						alt={hat.name}
@@ -51,7 +51,7 @@ export default function ItemCard({ hat, overlayStatus }: Props) {
 						<h2 className="text-xl font-semibold text-gray-800 mb-1">
 							{hat.name}
 						</h2>
-						<p className="text-sm text-gray-600 mb-4">
+						<p className="text-sm text-gray-600 mb-4 line-clamp-1">
 							{hat.description}
 						</p>
 					</div>
