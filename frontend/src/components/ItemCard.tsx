@@ -58,13 +58,13 @@ export default function ItemCard({ hat, overlayStatus }: Props) {
 					<div className="flex gap-2 p-4 pt-0 mt-auto">
 						<button
 							onClick={() => setOverlayActive(true)}
-							className="flex-1 py-2 border border-[#20c997] text-[#20c997] rounded-md hover:bg-[#20c997] hover:text-[#79dfc1] hover:border-[#79dfc1] transition"
+							className="flex-1 py-2 btn-primary"
 						>
 							Show hat
 						</button>
 						<button
 							onClick={handleAdd}
-							className="flex-1 py-2 border border-[#20c997] text-[#20c997] rounded-md hover:bg-[#20c997] hover:text-[#79dfc1] hover:border-[#79dfc1] transition"
+							className="flex-1 py-2 btn-primary"
 						>
 							Add to cart
 						</button>

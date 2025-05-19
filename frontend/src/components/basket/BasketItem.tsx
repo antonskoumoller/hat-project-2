@@ -23,13 +23,13 @@ function Counter({
 }) {
 	return (
 		<div className="flex items-center">
-			<button onClick={onIncrement}>
-				<FaRegSquarePlus className="text-teal-500 w-6 h-6 hover:text-teal-200" />
+			<button className="text-primary hover:text-primary-accent" onClick={onIncrement}>
+				<FaRegSquarePlus className="w-6 h-6" />
 			</button>
 			<span className="p-2 text-2xl font-bold">{value}</span>
 
-			<button onClick={onDecrement}>
-				<FaRegSquareMinus className="text-amber-600 w-6 h-6 hover:text-amber-300" />
+			<button className="text-secondary hover:text-secondary-accent" onClick={onDecrement}>
+				<FaRegSquareMinus className=" w-6 h-6" />
 			</button>
 		</div>
 	);
@@ -47,7 +47,7 @@ export default function BasketItem(basketItem: BasketItemProps) {
 					onClose={() => setOverlayActive(false)}
 				/>
 			) : (
-				<div className="flex gap-5 border rounded-2xl border-teal-200 justify-between items-start mb-5 p-2">
+				<div className="flex gap-5 border rounded-2xl border-primary justify-between items-start mb-5 p-2">
 					<div className="basis-2/12 grow flex rounded-2xl bg-white justify-center">
 						<img
 							className="max-w-full max-h-32 object-contain"

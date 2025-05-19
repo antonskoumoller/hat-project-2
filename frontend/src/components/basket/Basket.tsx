@@ -25,13 +25,13 @@ export default function Basket() {
 			<div className="flex gap-5 justify-between mb-2 p-2">
 				<div className="basis-10/12 grow text-left flex gap-4">
 					<button
-						className="flex items-center gap-2 bg-teal-300 p-4 rounded-lg hover:bg-teal-200"
+						className="btn-primary flex items-center gap-2"
 						onClick={() => navigate("/product")}
 					>
 						<BsShopWindow /> Continue shopping
 					</button>
 					<button
-						className="flex items-center gap-2 bg-amber-600 p-4 rounded-lg hover:bg-amber-200"
+						className="btn-secondary flex items-center gap-2"
 						onClick={() => clearBasket()}
 					>
 						<FaRegTrashAlt /> Clear Basket
@@ -45,3 +45,4 @@ export default function Basket() {
 		</div>
 	);
 }
+// flex items-center gap-2 bg-teal-300 p-4 rounded-lg hover:bg-teal-200

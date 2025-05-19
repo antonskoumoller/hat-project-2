@@ -3,9 +3,9 @@ import { MySearchbar } from "./MySearchbar";
 
 export const Navbar = () => {
 	return (
-		<div className="flex flex-col w-screen py-4">
+		<div className="flex flex-col w-full py-4">
 			{" "}
-			<ul className="flex border-b border-[#20c997] fixed top-0 w-full bg-white z-50  pt-4">
+			<ul className="flex border-b border-[#20c997] top-0 w-full bg-white z-50  pt-4">
 				{/* Logo */}
 				<li className="flex items-center justify-center mr-4">
 					<a href="/">
