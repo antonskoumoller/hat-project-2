@@ -23,7 +23,7 @@ export default function LoginPage() {
         //regex for valid name (a first name, optionally with another name separated by -, followed by one or more other names)
         const regName : RegExp = /^[a-zA-Z]([\-]?[a-zA-Z]+)*( [a-zA-Z]([\-]?[a-zA-Z]+)*)+$/;
         if(!regName.test(name)){
-            return {fullName : "not a valid full name"};
+            return {fullName : "Not a valid full name"};
         }
         return {fullName : undefined};
     }
@@ -31,14 +31,14 @@ export default function LoginPage() {
         //regex for valid email (some non-white-space letters, followed by @, followed by more none-white-space letters, followed by ., followed by more none-white-space-letters)
         const regEmail : RegExp = /^\S+@\S+\.\S+$/;
         if(!regEmail.test(email)){
-            return {email : "not a valid email"};
+            return {email : "Not a valid email"};
         }
         return {email : undefined};
     }
     const validatePassword = (password : string): InfoErrors => {
         // just checks length of password
         if(password.length < 5) {
-            return {password : "Password must contain at least 5 characters!"};
+            return {password : "Password is too short"};
         }
         return {password : undefined};
     }
@@ -80,48 +80,61 @@ export default function LoginPage() {
     }
 
     return(
-        <form onSubmit={handleSubmit}>
-            <div>
-                {/* label associated to element with id specified in htmlFor */}
-                <label htmlFor="name-input"> Full name: </label>
-                {/* input-field */}
-                <input 
-                    id="name-input"
-                    name="fullName"
-                    onChange={handleInputChange}
-                    value={loginInfo.fullName}
-                    placeholder="your full name"
-                />
-                {/* inline error-message for ivalid input */}
-                {infoErrors.fullName && <span style={{color : "red"}}> {infoErrors.fullName}</span>}
-            </div>
-            <div>
-                <label htmlFor="email-input"> Email adress: </label>
-                <input 
-                    id="email-input"
-                    name="email"
-                    onChange={handleInputChange}
-                    value={loginInfo.email}
-                    placeholder="your@email.com"
-                />
-                {infoErrors.email && <span style={{color : "red"}}> {infoErrors.email}</span>}
-            </div>
-            <div>
-                <label htmlFor="password-input"> Password: </label>
-                <input 
-                    type="password" //hides password
-                    id="password-input"
-                    name="password"
-                    onChange={handleInputChange}
-                    value={loginInfo.password}
-                    placeholder="*****"
-                />
-                {infoErrors.password && <span style={{color : "red"}}> {infoErrors.password}</span>}
-            </div>
-            {/* the submit-button */}
-            <button type="submit"> Login </button>
-            {/* button that doesn't perform submit-action */}
-            <button type="button" onClick={clearForm}> Cancel </button>
-        </form>
+        //stylecreates flex-container where child is in center
+        <div className="flex justify-center">
+            {/* style: child is form, which is flex in column-style of fixed size */}
+            <form className="flex flex-col h-50 w-50 sm:h-100 sm:w-100 border justify-center shrink-0" onSubmit={handleSubmit}>
+                    {/* style: This column entry has label and input in each end with given margins */}
+                    <div className="flex justify-between text-sm ml-2 mr-2 sm:text-base sm:ml-8 sm:mr-8">
+                        {/* label associated to element with id specified in htmlFor */}
+                        <label className="" htmlFor="name-input"> Full name:  </label>
+                        {/* input-field */}
+                        <input className="border rounded-sm w-1/2 sm:w-2/3"
+                            id="name-input"
+                            name="fullName"
+                            onChange={handleInputChange}
+                            value={loginInfo.fullName}
+                            placeholder="your full name"
+                        />
+                       
+                    </div>
+                    {/* inline error-message for ivalid input (adds invisible line if no error-message, for styling purposes)*/}
+                    {infoErrors.fullName ? <p className="flex justify-start text-xs ml-10 sm:ml-27 sm:text-base" style={{color : "red"}}> {infoErrors.fullName}</p> : <p className="invisible text-xs sm:text-base">*</p> }
+        
+                <div className="flex justify-between text-sm ml-2 mr-2 sm:text-base sm:ml-8 sm:mr-8">
+                    <label className="" htmlFor="email-input"> Email adress: </label>
+                    <input className="border rounded-sm w-1/2 sm:w-2/3"
+                        id="email-input"
+                        name="email"
+                        onChange={handleInputChange}
+                        value={loginInfo.email}
+                        placeholder="your@email.tld"
+                    />
+                </div>
+                    {infoErrors.email ? <p className="flex justify-start text-xs ml-10 sm:ml-27 sm:text-base" style={{color : "red"}}> {infoErrors.email}</p> : <p className="invisible text-xs sm:text-base">*</p> }
+        
+                <div className="flex justify-between text-sm ml-2 mr-2 sm:text-base sm:ml-8 sm:mr-8">
+                    <label className="" htmlFor="password-input"> Password: </label>
+                    <input className="border rounded-sm w-1/2 sm:w-2/3"
+                        type="password" //hides password
+                        id="password-input"
+                        name="password"
+                        onChange={handleInputChange}
+                        value={loginInfo.password}
+                        placeholder="*****"
+                    />
+                </div>
+                    {infoErrors.password ? <p className="flex justify-start text-xs ml-10 sm:ml-27 sm:text-base" style={{color : "red"}}> {infoErrors.password}</p> : <p className="invisible text-xs sm:text-base">*</p> }
+        
+                <div className="flex justify-center text-sm sm:text-base gap-2 mt-2">
+                    {/* the submit-button */}
+                    <button className="w-1/3" type="submit"> Login </button>
+                    {/* button that doesn't perform submit-action */}
+                    <button className="w-1/3" type="button" onClick={clearForm}> Cancel </button>
+                </div>
+            
+                
+            </form>
+        </div>
     );
 }
