@@ -15,6 +15,7 @@ async function getAllCustomers() {
 	return rows;
 };
 
+
 async function insertCustomer(name, email, password) {
 	if (!db) {
 		throw new Error("Database not yet initialized");
@@ -28,7 +29,7 @@ async function getCustomerWithId(customerId){
 	if (!db) {
 		throw new Error("Database not yet initialized");
 	}
-	const query = "SELECT * FROM customers WHERE id = ?";
+	const query = "SELECT * FROM customers WHERE email = ?";
 	const row = await dbGet(query, [customerId]);
 	return row;
 }
@@ -38,7 +39,7 @@ async function updateCustomer(name, email, password, customerId){
 		throw new Error("Database not yet initialized");
 	}
 	const query =
-		"UPDATE customers SET name = ?, email = ?, password = ? WHERE id = ?";
+		"UPDATE customers SET name = ?, email = ?, password = ? WHERE email = ?";
 	const row = await getCustomerWithId(customerId);
 	if(row === undefined){
 		return false;
@@ -51,7 +52,7 @@ async function deleteCustomerWithId(customerId) {
 	if (!db) {
 		throw new Error("Database not yet initialized");
 	}
-	const query = "DELETE FROM customers WHERE id = ?";
+	const query = "DELETE FROM customers WHERE email = ?";
 	const row = await getCustomerWithId(customerId);
 	if(row === undefined){
 		return false;

@@ -2,7 +2,7 @@
 SELECT * FROM customers
 
 -- GET /customers/:id
-SELECT * FROM customers WHERE id = ?
+SELECT * FROM customers WHERE email = ?
 
 -- GET /products
 SELECT * FROM products

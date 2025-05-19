@@ -74,6 +74,7 @@ export default function LoginPage() {
         if(validation.fullName||validation.email||validation.password){
             alert("Provided info not valid!")
         } else{
+            
             clearForm();
             alert("You succesfully entered information"); //behaviour for now
         }
