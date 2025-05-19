@@ -11,10 +11,18 @@ export default function Basket() {
 	return (
 		<div>
 			<div className="flex gap-5 justify-between mb-2 p-2">
-				<div className="basis-2/12 grow text-left">Product</div>
-				<div className="basis-6/12 grow text-left">Description</div>
-				<div className="basis-2/12 grow text-left">Quantity</div>
-				<div className="basis-2/12 grow text-left">Price</div>
+				<div className="basis-2/12 grow text-left md:font-bold">
+					Product
+				</div>
+				<div className="basis-6/12 grow text-left md:font-bold">
+					Description
+				</div>
+				<div className="basis-2/12 grow text-left md:font-bold">
+					Quantity
+				</div>
+				<div className="basis-2/12 grow text-left md:font-bold">
+					Price
+				</div>
 			</div>
 			<div>
 				{items.map((item) => (
@@ -23,7 +31,7 @@ export default function Basket() {
 			</div>
 
 			<div className="flex gap-5 justify-between mb-2 p-2">
-				<div className="basis-10/12 grow text-left flex gap-4">
+				<div className="basis-10/12 grow text-left flex flex-wrap gap-4">
 					<button
 						className="btn-primary flex items-center gap-2"
 						onClick={() => navigate("/product")}
@@ -37,12 +45,13 @@ export default function Basket() {
 						<FaRegTrashAlt /> Clear Basket
 					</button>
 				</div>
-				<div className="basis-2/12 grow self-center justify-center">
-					<span className="text-lg mr-2">Total: </span>
-					<span className="text-3xl font-bold">{totalPrice} kr</span>
+				<div className="basis-4/12 grow flex justify-end items-end gap-2">
+					<span className="text-md sm:text-xl">Total:</span>
+					<span className="text-md sm:text-3xl font-bold">
+						{totalPrice} kr
+					</span>
 				</div>
 			</div>
 		</div>
 	);
 }
-// flex items-center gap-2 bg-teal-300 p-4 rounded-lg hover:bg-teal-200
