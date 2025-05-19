@@ -40,17 +40,18 @@ export default function ItemCard({ hat, overlayStatus }: Props) {
 
 	return (
 		<>
-			{overlayActive ? (
-				<ShowProductOverlay
-					onClose={() => setOverlayActive(false)}
-					hat={hat}
-				/>
-			) : (
+			<div className="relative">
+				{overlayActive && (
+					<ShowProductOverlay
+						onClose={() => setOverlayActive(false)}
+						hat={hat}
+					/>
+				)}
 				<div className="relative flex flex-col max-w-sm w-full border border-[#20c997] rounded-xl overflow-hidden shadow-md transition hover:shadow-lg pt-4">
 					{showAlert && (
 						<div className="absolute top-2 left-2 right-2 z-50">
 							<Alert severity="success">
-								Item {hat.name} to basket!
+								{hat.name} added to basket!
 							</Alert>
 						</div>
 					)}
@@ -72,7 +73,7 @@ export default function ItemCard({ hat, overlayStatus }: Props) {
 							onClick={handleAdd}
 							className="flex-1 py-2 btn-primary flex items-center gap-4"
 						>
-							<CiShoppingBasket/>
+							<CiShoppingBasket />
 							Add to cart
 						</button>
 						<button
@@ -83,7 +84,7 @@ export default function ItemCard({ hat, overlayStatus }: Props) {
 						</button>
 					</div>
 				</div>
-			)}
+			</div>
 		</>
 	);
 }
