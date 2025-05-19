@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { LoginProvider, useLogin } from "../context/LoginContext";
 
-type LoginInfo = {
+export type LoginInfo = {
     fullName: string;
     email: string;
     password: string;
@@ -17,6 +18,9 @@ export default function LoginPage() {
     const [loginInfo, setLoginInfo] = useState<LoginInfo>({fullName:"", email:"", password:""});
     //state related to errors
     const [infoErrors, setInfoErrors] = useState<InfoErrors>({});
+
+    const loginContext = useLogin();
+    const {login, register} = loginContext;
 
     //validation-functions for individual fields
     const validateFullName = (name : string): InfoErrors => {
@@ -67,16 +71,27 @@ export default function LoginPage() {
         setInfoErrors({});
     }
 
-    //for processing submission of input
     const handleSubmit = (e:React.FormEvent) => {
         e.preventDefault(); //prevent (default) submission to webserver
         const validation = validate();
         if(validation.fullName||validation.email||validation.password){
             alert("Provided info not valid!")
         } else{
-            
+            login(loginInfo);
             clearForm();
-            alert("You succesfully entered information"); //behaviour for now
+            alert("You succesfully logged in - welcome back"); 
+        }
+    }
+
+    //for processing submission of input
+    const registerUser = (e:React.FormEvent) => {
+        const validation = validate();
+        if(validation.fullName||validation.email||validation.password){
+            alert("Provided info not valid!")
+        } else{
+            register(loginInfo);
+            clearForm();
+            alert("You succesfully registered - welcome!"); //behaviour for now
         }
     }
 
@@ -132,6 +147,12 @@ export default function LoginPage() {
                     <button className="w-1/3" type="submit"> Login </button>
                     {/* button that doesn't perform submit-action */}
                     <button className="w-1/3" type="button" onClick={clearForm}> Cancel </button>
+                </div>
+                <div className="flex justify-center text-sm sm:text-base gap-2 mt-2">
+                    {/* the submit-button */}
+                    <button className="w-1/3" type="button" onClick={registerUser}> Register </button>
+                    {/* button that doesn't perform submit-action */}
+                    <button className="w-1/3" type="button" onClick={clearForm}> Unregister </button>
                 </div>
             
                 

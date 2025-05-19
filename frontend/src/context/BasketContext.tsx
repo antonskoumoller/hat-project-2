@@ -32,7 +32,7 @@ export function BasketProvider({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		if (isLoggedIn && user?.email) {
-			fetch(`http://localhost:3000/customers/${encodeURIComponent(user.email)}$/basket`)
+			fetch(`http://localhost:3000/customers/${encodeURIComponent(user.email)}/basket`)
 				.then((res) => res.json())
 				.then((data) => setItems(data))
 				.catch((err) => console.error(err));

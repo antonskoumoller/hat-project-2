@@ -28,7 +28,7 @@ async function insertCustomer(req, res) {
 	try {
 		let row = await customers.getCustomerWithId(email);
 		if (row !== undefined) {
-			res.status(400).json({ error: `Customer with id ${email} already exists`});
+			res.status(409).json({ error: `Customer with id ${email} already exists`});
 			return;
 		}
 		await customers.insertCustomer(name, email, password);
