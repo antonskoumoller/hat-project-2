@@ -78,8 +78,7 @@ export default function LoginPage() {
             alert("Provided info not valid!")
         } else{
             login(loginInfo);
-            clearForm();
-            alert("You succesfully logged in - welcome back"); 
+            clearForm(); 
         }
     }
 
@@ -91,7 +90,6 @@ export default function LoginPage() {
         } else{
             register(loginInfo);
             clearForm();
-            alert("You succesfully registered - welcome!"); //behaviour for now
         }
     }
 

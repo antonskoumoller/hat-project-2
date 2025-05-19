@@ -43,6 +43,7 @@ export function LoginProvider({ children }: { children: React.ReactNode }) {
 						name: data.name,
 						email: data.email
 						})
+						alert("You succesfully logged in - welcome back");
 					}
 				})
 				.catch((err) => {
@@ -71,6 +72,7 @@ export function LoginProvider({ children }: { children: React.ReactNode }) {
 							name: credentials.fullName,
 							email: credentials.email
 						})
+						alert("You succesfully registered - welcome!");
 					}
 				})
 				.catch((err) => {
