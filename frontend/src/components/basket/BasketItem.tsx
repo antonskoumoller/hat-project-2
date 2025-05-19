@@ -27,7 +27,9 @@ function Counter({
 			>
 				<FaRegSquarePlus className="w-6 h-6" />
 			</button>
-			<span className="p-2 text-2xl font-bold">{value}</span>
+			<span className="text-md p-1 md:p-2 md:text-2xl font-bold">
+				{value}
+			</span>
 
 			<button
 				className="text-secondary hover:text-secondary-accent"
@@ -69,10 +71,10 @@ export default function BasketItem(basketItem: BasketItemProps) {
 						<h2 className="text-xl font-bold mb-2">
 							{basketItem.name}
 						</h2>
-						<p className="text-md font-light mb-2">
+						<p className="hidden sm:block text-md font-light mb-2">
 							{basketItem.description}
 						</p>
-						<p className="text-xs mb-2">
+						<p className="hidden md:block text-xs mb-2">
 							{basketItem.fullDescription}
 						</p>
 					</div>
@@ -85,7 +87,7 @@ export default function BasketItem(basketItem: BasketItemProps) {
 						/>
 					</div>
 
-					<div className="basis-2/12 grow flex self-center justify-center text-xl font-bold">
+					<div className="basis-2/12 grow flex self-center justify-center text-md md:text-xl font-bold">
 						<p>{basketItem.price * basketItem.quantity} kr</p>
 					</div>
 				</div>
