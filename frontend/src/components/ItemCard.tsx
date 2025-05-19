@@ -60,7 +60,7 @@ export default function ItemCard({ hat, overlayStatus }: Props) {
 						className="w-full h-48 object-contain"
 					/>
 					<div className="p-4 flex flex-col flex-grow">
-						<h2 className="text-xl font-semibold text-gray-800 mb-1">
+						<h2 className="text-xl font-semibold text-gray-800 mb-1 line-clamp-1">
 							{hat.name}
 						</h2>
 						<p className="text-sm text-gray-600 mb-4 line-clamp-1">
