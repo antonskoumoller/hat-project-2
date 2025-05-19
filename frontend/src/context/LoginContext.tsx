@@ -1,11 +1,10 @@
 import React, { createContext, useContext, useState } from "react";
 
 type User = {
-	id: number;
 	name: string;
 	email: string;
 };
-
+//Maybe add fullname here
 type LoginCredentials = {
 	email: string;
 	password: string;
@@ -26,7 +25,6 @@ export function LoginProvider({ children }: { children: React.ReactNode }) {
 	function login(credentials: LoginCredentials) {
 		// Some login validation from the other login thing
 		setUser({
-			id: 1,
 			name: "Demo User",
 			email: credentials.email
 		});
