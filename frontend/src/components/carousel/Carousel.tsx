@@ -5,32 +5,43 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 // export interface CarouselProps
 type CarouselProps = {
 	CarouselHats: HatItem[];
-	hatsPerSlide: number;
 };
 
-export default function Carousel({
-	CarouselHats,
-	hatsPerSlide
-}: CarouselProps) {
-	// useStates, one holding the index for the current slide and one holding the id of hat-item opened in the overlay
+export default function Carousel({ CarouselHats }: CarouselProps) {
+	// useStates; index for the current slide, id of hatItem if open overlay, hats according to screensize
+	// one holding the id of hat-item opened in the overlay, one holding
 	const [currentSlide, setCurrentSlide] = useState(0);
 	const [openOverlayIds, setOpenOverlayIds] = useState<Set<number>>(
 		new Set()
 	);
+	const [hatsPerSlide, setHatsPerSlide] = useState(hatsAccToScreen());
 
-	// Checking if any overlays is active
-	const isOverlayActive = openOverlayIds.size > 0;
+	// Hats according to screen size
+	function hatsAccToScreen() {
+		return window.innerWidth < 768 ? 1 : 3;
+	}
+
+	// Handling number of hats when screen size changes
+	useEffect(() => {
+		const handleResize = () => {
+			setHatsPerSlide(hatsAccToScreen());
+		};
+
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
 
 	// Handling changes in overlay
+	const isOverlayActive = openOverlayIds.size > 0;
 	const handleOverlayChange = (id: number, isOpen: boolean) => {
 		setOpenOverlayIds((prev) => {
-			const updated = new Set(prev);
+			const countOpenOverlays = new Set(prev);
 			if (isOpen) {
-				updated.add(id);
+				countOpenOverlays.add(id);
 			} else {
-				updated.delete(id);
+				countOpenOverlays.delete(id);
 			}
-			return updated;
+			return countOpenOverlays;
 		});
 	};
 
@@ -63,37 +74,40 @@ export default function Carousel({
 			// Clearing the timer when the component rerenders
 			return () => clearInterval(timer);
 		}
-	}, [isOverlayActive]);
+	}, [currentSlide, isOverlayActive]);
 
 	return (
-		<div className="w-full max-w-6xl mx-auto h-3/4">
-			{/*Cards*/}
-			<div className="flex justify-center gap-6 h-full">
-				{currentHats.map((hat) => (
-					<div key={hat.id} className="w-80 h-full">
-						<ItemCard
-							hat={hat}
-							overlayStatus={(isOpen) =>
-								handleOverlayChange(hat.id, isOpen)
-							}
-						/>
-					</div>
-				))}
-			</div>
+		<div className="w-full h-3/4 flex justify-center items-center">
+			<div className="relative flex items-center w-full max-w-6xl">
+				{/*Cards*/}
+				<div className="flex justify-center gap-6 w-full h-full p-12">
+					{currentHats.map((hat) => (
+						<div key={hat.id} className="flex grow max-w-xs">
+							<ItemCard
+								hat={hat}
+								overlayStatus={(isOpen) =>
+									handleOverlayChange(hat.id, isOpen)
+								}
+							/>
+						</div>
+					))}
+				</div>
 
-			{/* Navigation Buttons*/}
-			<button
-				onClick={prevSlide}
-				className="absolute left-18 top-1/2 p-5"
-			>
-				<SlArrowLeft className="text-teal-500 w-6 h-6 hover:text-teal-200" />
-			</button>
-			<button
-				onClick={nextSlide}
-				className="absolute right-18 top-1/2  p-5"
-			>
-				<SlArrowRight className="text-teal-500 w-6 h-6 hover:text-teal-200" />
-			</button>
+				{/* Navigation Buttons*/}
+				<button
+					onClick={prevSlide}
+					className="absolute left-0 top-1/2 p-3"
+				>
+					<SlArrowLeft className="text-teal-500 w-6 h-6 hover:text-teal-200" />
+				</button>
+
+				<button
+					onClick={nextSlide}
+					className="absolute right-0 top-1/2 p-3"
+				>
+					<SlArrowRight className="text-teal-500 w-6 h-6 hover:text-teal-200" />
+				</button>
+			</div>
 		</div>
 	);
 }
