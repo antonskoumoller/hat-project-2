@@ -20,7 +20,7 @@ export default function HomePage() {
 
 	return (
 		<div className="w-full h-full p-6">
-			<div className="w-full h-3/4 border rounded-lg border-[#20c997] p-6">
+			<div className="w-full h-3/4 border rounded-lg border-primary p-6">
 				<h2 className="text-gray-500 text-3xl text-left font-semibold mb-6 -mt-4">
 					Popular Items
 				</h2>
