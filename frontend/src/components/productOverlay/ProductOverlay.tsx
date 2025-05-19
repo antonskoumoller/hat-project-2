@@ -16,7 +16,7 @@ export const ShowProductOverlay = ({
 		<>
 			{hat && (
 				<div
-					className="flex justify-center items-center absolute top-0 left-0 w-full h-full bg-black/50 z-[1000]"
+					className="fixed flex justify-center items-center top-0 left-0 w-full h-full bg-black/50 z-[1000] p-5"
 					onClick={onClose}
 				>
 					<div
