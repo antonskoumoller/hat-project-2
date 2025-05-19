@@ -10,8 +10,6 @@ export type BasketItemProps = HatItem & {
 	customer_id: number;
 };
 
-// TODO: Make clicking the button show the product overlay on the BasketPage.tsx
-
 function Counter({
 	value,
 	onIncrement,
@@ -23,12 +21,18 @@ function Counter({
 }) {
 	return (
 		<div className="flex items-center">
-			<button className="text-primary hover:text-primary-accent" onClick={onIncrement}>
+			<button
+				className="text-primary hover:text-primary-accent"
+				onClick={onIncrement}
+			>
 				<FaRegSquarePlus className="w-6 h-6" />
 			</button>
 			<span className="p-2 text-2xl font-bold">{value}</span>
 
-			<button className="text-secondary hover:text-secondary-accent" onClick={onDecrement}>
+			<button
+				className="text-secondary hover:text-secondary-accent"
+				onClick={onDecrement}
+			>
 				<FaRegSquareMinus className=" w-6 h-6" />
 			</button>
 		</div>
@@ -41,12 +45,13 @@ export default function BasketItem(basketItem: BasketItemProps) {
 
 	return (
 		<>
-			{overlayActive ? (
-				<ShowProductOverlay
-					id={basketItem.id}
-					onClose={() => setOverlayActive(false)}
-				/>
-			) : (
+			<div className="relative">
+				{overlayActive && (
+					<ShowProductOverlay
+						onClose={() => setOverlayActive(false)}
+						hat={basketItem}
+					/>
+				)}
 				<div className="flex gap-5 border rounded-2xl border-primary justify-between items-start mb-5 p-2">
 					<div className="basis-2/12 grow flex rounded-2xl bg-white justify-center">
 						<img
@@ -84,7 +89,7 @@ export default function BasketItem(basketItem: BasketItemProps) {
 						<p>{basketItem.price * basketItem.quantity} kr</p>
 					</div>
 				</div>
-			)}
+			</div>
 		</>
 	);
 }
