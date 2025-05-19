@@ -1,5 +1,6 @@
 import { HatItem } from "../ItemCard";
 import { useBasket } from "../../context/BasketContext.tsx";
+import { CiShoppingBasket } from "react-icons/ci";
 
 type OverlayButtonsProps = {
 	onClose: () => void;
@@ -19,13 +20,14 @@ export const OverlayButtons = ({ onClose, hat }: OverlayButtonsProps) => {
 		<div className="flex justify-center gap-2 mt-4 ">
 			<button
 				onClick={handleAddItem}
-				className="px-4 py-2 btn-primary"
+				className="px-4 py-2 btn-primary flex items-center gap-2"
 			>
+				<CiShoppingBasket/>
 				Add to Cart
 			</button>{" "}
 			{}
 			<button
-				className="px-4 py-2 btn-primary"
+				className="px-4 py-2 btn-secondary"
 				onClick={onClose}
 			>
 				{" "}
