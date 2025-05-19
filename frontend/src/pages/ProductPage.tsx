@@ -92,7 +92,7 @@ export default function ProductPage() {
           </Select>
         </FormControl>
         </ThemeProvider>
-        <button className="px-4 py-2 border border-[#20c997] text-[#20c997] rounded-md hover:bg-[#20c997] hover:text-[#79dfc1] hover:border-[#79dfc1] transition" onClick={clearFilters}>
+        <button className="px-4 py-2 btn-secondary" onClick={clearFilters}>
           Clear Filters
         </button>
       </Box>
