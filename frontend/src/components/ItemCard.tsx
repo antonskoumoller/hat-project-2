@@ -2,6 +2,7 @@ import * as React from "react";
 import { ShowProductOverlay } from "./productOverlay/ProductOverlay";
 import { useBasket } from "../context/BasketContext";
 import Alert from "@mui/material/Alert";
+import { CiShoppingBasket } from "react-icons/ci";
 
 export type HatItem = {
 	id: number;
@@ -68,16 +69,17 @@ export default function ItemCard({ hat, overlayStatus }: Props) {
 					</div>
 					<div className="flex gap-2 p-4 pt-0 mt-auto">
 						<button
+							onClick={handleAdd}
+							className="flex-1 py-2 btn-primary flex items-center gap-4"
+						>
+							<CiShoppingBasket/>
+							Add to cart
+						</button>
+						<button
 							onClick={() => setOverlayActive(true)}
 							className="flex-1 py-2 btn-primary"
 						>
 							Show hat
-						</button>
-						<button
-							onClick={handleAdd}
-							className="flex-1 py-2 btn-primary"
-						>
-							Add to cart
 						</button>
 					</div>
 				</div>
