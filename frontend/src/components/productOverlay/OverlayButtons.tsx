@@ -1,21 +1,36 @@
+import { HatItem } from "../ItemCard";
+import { useBasket } from "../../context/BasketContext.tsx";
+
 type OverlayButtonsProps = {
-  onClose: () => void;
+	onClose: () => void;
+	hat: HatItem;
 };
 
-export const OverlayButtons = ({ onClose }: OverlayButtonsProps) => {
-  return (
-    <div className="flex justify-center gap-2 mt-4 ">
-      <button className="px-4 py-2 btn-primary">
-        Add to Cart
-      </button>{" "}
-      {}
-      <button
-        className="px-4 py-2 btn-primary"
-        onClick={onClose}
-      >
-        {" "}
-        Close{" "}
-      </button>
-    </div>
-  );
+export const OverlayButtons = ({ onClose, hat }: OverlayButtonsProps) => {
+	const { addItem } = useBasket();
+
+	function handleAddItem() {
+		console.log("Adding hat from overlay:", hat);
+
+		addItem({ ...hat });
+	}
+
+	return (
+		<div className="flex justify-center gap-2 mt-4 ">
+			<button
+				onClick={handleAddItem}
+				className="px-4 py-2 btn-primary"
+			>
+				Add to Cart
+			</button>{" "}
+			{}
+			<button
+				className="px-4 py-2 btn-primary"
+				onClick={onClose}
+			>
+				{" "}
+				Close{" "}
+			</button>
+		</div>
+	);
 };
