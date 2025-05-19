@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ShowProductOverlay } from "./productOverlay/ProductOverlay";
 import { useBasket } from "../context/BasketContext";
+import Alert from "@mui/material/Alert";
 
 export type HatItem = {
 	id: number;
@@ -20,10 +21,13 @@ type Props = {
 
 export default function ItemCard({ hat, overlayStatus }: Props) {
 	const [overlayActive, setOverlayActive] = React.useState(false);
+	const [showAlert, setShowAlert] = React.useState(false);
 	const { addItem } = useBasket();
 
 	function handleAdd() {
 		addItem({ ...hat });
+		setShowAlert(true);
+		setTimeout(() => setShowAlert(false), 5000);
 	}
 
 	// useEffect that (via callback) updates the carousel if the state of overlayActive changes
@@ -37,11 +41,18 @@ export default function ItemCard({ hat, overlayStatus }: Props) {
 		<>
 			{overlayActive ? (
 				<ShowProductOverlay
-					id={hat.id}
 					onClose={() => setOverlayActive(false)}
+					hat={hat}
 				/>
 			) : (
-				<div className="flex flex-col max-w-sm w-full border border-[#20c997] rounded-xl overflow-hidden shadow-md transition hover:shadow-lg pt-4">
+				<div className="relative flex flex-col max-w-sm w-full border border-[#20c997] rounded-xl overflow-hidden shadow-md transition hover:shadow-lg pt-4">
+					{showAlert && (
+						<div className="absolute top-2 left-2 right-2 z-50">
+							<Alert severity="success">
+								Item {hat.name} to basket!
+							</Alert>
+						</div>
+					)}
 					<img
 						src={hat.img}
 						alt={hat.name}
