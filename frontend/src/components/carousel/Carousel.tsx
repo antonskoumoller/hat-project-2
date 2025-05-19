@@ -98,14 +98,14 @@ export default function Carousel({ CarouselHats }: CarouselProps) {
 					onClick={prevSlide}
 					className="absolute left-0 top-1/2 p-3"
 				>
-					<SlArrowLeft className="text-teal-500 w-6 h-6 hover:text-teal-200" />
+					<SlArrowLeft className="text-primary w-6 h-6 hover:text-primary-accent" />
 				</button>
 
 				<button
 					onClick={nextSlide}
 					className="absolute right-0 top-1/2 p-3"
 				>
-					<SlArrowRight className="text-teal-500 w-6 h-6 hover:text-teal-200" />
+					<SlArrowRight className="text-primary w-6 h-6 hover:text-primary-accent" />
 				</button>
 			</div>
 		</div>
