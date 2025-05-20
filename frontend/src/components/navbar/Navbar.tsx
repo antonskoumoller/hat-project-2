@@ -6,7 +6,7 @@ import { RxCross1, RxHamburgerMenu } from "react-icons/rx";
 export const Navbar = () => {
 	const [menuOpen, setMenuOpen] = useState(false);
 	const loginContext = useLogin();
-	const {user} = loginContext;
+	const { user } = loginContext;
 	return (
 		<nav className="w-full bg-white border-b border-primary px-4 py-2 z-50 relative">
 			<div className="flex items-center justify-between">
@@ -18,10 +18,14 @@ export const Navbar = () => {
 				{/* Hamburger Menu Icon (mobile only) */}
 				<button
 					className="sm:hidden"
-					onClick={() => setMenuOpen(prev => !prev)}
+					onClick={() => setMenuOpen((prev) => !prev)}
 					aria-label="Toggle menu"
 				>
-					{menuOpen ? <RxCross1 size={24} /> : <RxHamburgerMenu size={24} />}
+					{menuOpen ? (
+						<RxCross1 size={24} />
+					) : (
+						<RxHamburgerMenu size={24} />
+					)}
 				</button>
 
 				{/* Desktop Menu */}
@@ -29,11 +33,16 @@ export const Navbar = () => {
 					<MyNavlink path="/" text="Home" />
 					<MyNavlink path="/product" text="Shop" />
 					<li className="text-sm text-gray-700">
-						{user?.email ? <>Welcome {user.name}</> : <>Welcome Guest</>}
+						<h1>
+							{user?.email ? (
+								<>Welcome {user.name}</>
+							) : (
+								<>Welcome Guest</>
+							)}
+						</h1>
 					</li>
 					<MyNavlink path="/basket" text="Basket" />
 					<MyNavlink path="/login" text="Login" />
-					
 				</ul>
 			</div>
 
@@ -46,9 +55,12 @@ export const Navbar = () => {
 					<MyNavlink path="/login" text="Login" />
 					<li className="text-sm text-gray-700 px-2">
 						<h1>
-							{user?.email ? <>Welcome {user.name}</> : <>Welcome Guest</>}
+							{user?.email ? (
+								<>Welcome {user.name}</>
+							) : (
+								<>Welcome Guest</>
+							)}
 						</h1>
-						
 					</li>
 				</ul>
 			)}
