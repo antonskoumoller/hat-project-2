@@ -1,6 +1,9 @@
 import { MyNavlink } from "./MyNavlink";
+import { useLogin } from "../../context/LoginContext";
 
 export const Navbar = () => {
+	const loginContext = useLogin();
+	const {user} = loginContext;
 	return (
 		<div className="flex flex-col w-full">
 			<ul className="flex border-b px-4 border-[#20c997] my-3 top-0 w-full bg-white z-50">
@@ -20,7 +23,7 @@ export const Navbar = () => {
 
 				{/* should get functionallity, when the login part is ready */}
 				<li className="-mb-px mr-1 flex-grow text-center">
-					Welcome Guest
+					{user?.email ? <>Welcome {user.name}</> : <>Welcome Guest</>}
 				</li>
 
 				<MyNavlink path="/basket" text="Basket" />

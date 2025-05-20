@@ -39,9 +39,9 @@ INSERT INTO products (id, name, img, description, fullDescription, category, pop
 (16, "Chicken hat", "/images/chick-hat.jpg", "A hat that looks like a chicken. Perfect for the chicken lover in your life. Or if you are a chicken. Or if you just like chickens", 
    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...", "Fun", 0, 9, "Von Dutch");
 
-INSERT INTO basketEntries (customer_id, product_id, quantity) VALUES ('1', '1', '1');
-INSERT INTO basketEntries (customer_id, product_id, quantity) VALUES ('1', '2', '1');
-INSERT INTO basketEntries (customer_id, product_id, quantity) VALUES ('1', '3', '3');
-INSERT INTO basketEntries (customer_id, product_id, quantity) VALUES ('2', '1', '1');
-INSERT INTO basketEntries (customer_id, product_id, quantity) VALUES ('3', '1', '4');
-INSERT INTO basketEntries (customer_id, product_id, quantity) VALUES ('3', '2', '1');
+INSERT INTO basketEntries (customer_id, product_id, quantity) VALUES ('andreas@mail.com', '1', '1');
+INSERT INTO basketEntries (customer_id, product_id, quantity) VALUES ('andreas@mail.com', '2', '1');
+INSERT INTO basketEntries (customer_id, product_id, quantity) VALUES ('andreas@mail.com', '3', '3');
+INSERT INTO basketEntries (customer_id, product_id, quantity) VALUES ('anne@mail.com', '1', '1');
+INSERT INTO basketEntries (customer_id, product_id, quantity) VALUES ('anton@mail.com', '1', '4');
+INSERT INTO basketEntries (customer_id, product_id, quantity) VALUES ('anton@mail.com', '2', '1');

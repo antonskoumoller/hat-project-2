@@ -31,13 +31,13 @@ export function BasketProvider({ children }: { children: React.ReactNode }) {
 	const { isLoggedIn, user } = useLogin();
 
 	useEffect(() => {
-		if (isLoggedIn && user?.id) {
-			fetch(`http://localhost:3000/customers/${user.id}/basket`)
+		if (isLoggedIn && user?.email) {
+			fetch(`http://localhost:3000/customers/${encodeURIComponent(user.email)}/basket`)
 				.then((res) => res.json())
 				.then((data) => setItems(data))
 				.catch((err) => console.error(err));
 		}
-	}, [isLoggedIn, user?.id]);
+	}, [isLoggedIn, user?.email]);
 
 	useEffect(() => {
 		if (!isLoggedIn) {
@@ -81,9 +81,9 @@ export function BasketProvider({ children }: { children: React.ReactNode }) {
 					i.id === hat.id ? { ...i, quantity: i.quantity + 1 } : i
 				);
 
-				if (isLoggedIn && user?.id) {
+				if (isLoggedIn && user?.email) {
 					fetch(
-						`http://localhost:3000/customers/${user.id}/basket/${hat.id}`,
+						`http://localhost:3000/customers/${encodeURIComponent(user.email)}/basket/${hat.id}`,
 						{
 							method: "POST"
 						}
@@ -94,16 +94,16 @@ export function BasketProvider({ children }: { children: React.ReactNode }) {
 
 				return updated;
 			}
-
+			//TODO: maybe this needs to be changed
 			const newItem: BasketItemProps = {
 				...hat,
-				customer_id: isLoggedIn ? user!.id : 0,
+				customer_id: isLoggedIn ? user!.email : "demo@mail.com",
 				quantity: 1
 			};
 
-			if (isLoggedIn && user?.id) {
+			if (isLoggedIn && user?.email) {
 				fetch(
-					`http://localhost:3000/customers/${user.id}/basket/${hat.id}`,
+					`http://localhost:3000/customers/${encodeURIComponent(user.email)}/basket/${hat.id}`,
 					{
 						method: "POST"
 					}
@@ -127,9 +127,9 @@ export function BasketProvider({ children }: { children: React.ReactNode }) {
 			setItems((prev) => prev.filter((i) => i.id !== hat.id));
 
 			// If logged in, delete item from backend
-			if (isLoggedIn && user?.id) {
+			if (isLoggedIn && user?.email) {
 				fetch(
-					`http://localhost:3000/customers/${user.id}/basket/${hat.id}`,
+					`http://localhost:3000/customers/${user.email}/basket/${hat.id}`,
 					{
 						method: "DELETE"
 					}
@@ -149,9 +149,9 @@ export function BasketProvider({ children }: { children: React.ReactNode }) {
 		);
 
 		// Sync to backend if logged in
-		if (isLoggedIn && user?.id) {
+		if (isLoggedIn && user?.email) {
 			fetch(
-				`http://localhost:3000/customers/${user.id}/basket/${hat.id}`,
+				`http://localhost:3000/customers/${encodeURIComponent(user.email)}/basket/${hat.id}`,
 				{
 					method: "PUT"
 				}
@@ -164,8 +164,8 @@ export function BasketProvider({ children }: { children: React.ReactNode }) {
 	function clearBasket() {
 		setItems([]);
 
-		if (isLoggedIn && user?.id) {
-			fetch(`http://localhost:3000/customers/${user.id}/basket`, {
+		if (isLoggedIn && user?.email) {
+			fetch(`http://localhost:3000/customers/${encodeURIComponent(user.email)}/basket`, {
 				method: "DELETE"
 			}).catch((err) => console.error("Error clearing basket:", err));
 		}

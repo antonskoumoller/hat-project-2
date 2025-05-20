@@ -2,9 +2,8 @@
 
 -- Create customers table
 CREATE TABLE IF NOT EXISTS customers (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
-  email TEXT NOT NULL UNIQUE,
+  email TEXT PRIMARY KEY,
   password TEXT NOT NULL
 );
 
@@ -27,7 +26,7 @@ CREATE TABLE IF NOT EXISTS basketEntries (
   product_id INTEGER,
   quantity INTEGER,
   PRIMARY KEY (customer_id, product_id),
-  FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE,
+  FOREIGN KEY (customer_id) REFERENCES customers(email) ON DELETE CASCADE,
   FOREIGN KEY (product_id) REFERENCES products(id)
 );
 

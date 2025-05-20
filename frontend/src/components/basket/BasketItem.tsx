@@ -7,7 +7,7 @@ import { ShowProductOverlay } from "../productOverlay/ProductOverlay";
 
 export type BasketItemProps = HatItem & {
 	quantity: number;
-	customer_id: number;
+	customer_id: string;
 };
 
 function Counter({
