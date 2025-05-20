@@ -20,8 +20,8 @@ export default function HomePage() {
 
 	return (
 		<div className="w-full h-full p-6">
-			<div className="w-full h-3/4 border rounded-lg border-primary p-6">
-				<h1 className="text-left ml-6">Popular Items</h1>
+			<div className="w-full h-3/4 border rounded-lg border-transparent p-6">
+				
 				<Carousel CarouselHats={popularHats} />
 			</div>
 		</div>
