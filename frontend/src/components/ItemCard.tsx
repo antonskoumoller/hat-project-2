@@ -17,10 +17,9 @@ export type HatItem = {
 };
 type Props = {
 	hat: HatItem;
-	overlayStatus?: (isOpen: boolean) => void; // optional prop
 };
 
-export default function ItemCard({ hat, overlayStatus }: Props) {
+export default function ItemCard({ hat }: Props) {
 	const [overlayActive, setOverlayActive] = React.useState(false);
 	const [showAlert, setShowAlert] = React.useState(false);
 	const { addItem } = useBasket();
@@ -30,13 +29,6 @@ export default function ItemCard({ hat, overlayStatus }: Props) {
 		setShowAlert(true);
 		setTimeout(() => setShowAlert(false), 5000);
 	}
-
-	// useEffect that (via callback) updates the carousel if the state of overlayActive changes
-	React.useEffect(() => {
-		if (overlayStatus) {
-			overlayStatus(overlayActive);
-		}
-	}, [overlayActive]);
 
 	return (
 		<>
