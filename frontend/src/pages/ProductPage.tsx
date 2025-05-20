@@ -68,7 +68,8 @@ export default function ProductPage() {
 					gap: 2,
 					alignItems: "center",
 					flexWrap: "wrap",
-					marginBottom: 2
+					marginBottom: 2,
+					padding: 1
 				}}
 			>
 				<ThemeProvider theme={theme}>
@@ -140,11 +141,10 @@ export default function ProductPage() {
 				container
 				spacing={{ xs: 2, md: 3 }}
 				columns={{ xs: 4, sm: 8, md: 12 }}
+				alignItems="center"
 			>
 				{filteredHats.map((hat) => (
-					<Grid size={4}>
-						<ItemCard hat={hat} />
-					</Grid>
+					<ItemCard hat={hat} />
 				))}
 			</Grid>
 		</Box>

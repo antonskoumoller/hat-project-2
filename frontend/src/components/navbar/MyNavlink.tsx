@@ -11,7 +11,7 @@ export const MyNavlink = (props: MyNavlinkProps) => {
 			<NavLink
 				className={({ isActive }) =>
 					isActive
-						? "active bg-white inline-block border-l border-t border-r rounded-t py-2 px-4 border-[#20c997] font-semibold"
+						? "active bg-white inline-block border rounded py-2 px-4 border-[#20c997] font-semibold"
 						: ""
 				}
 				to={props.path}

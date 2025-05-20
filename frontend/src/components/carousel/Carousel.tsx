@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ItemCard, { HatItem } from "../ItemCard";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
+import { Grid } from "@mui/material";
 
 // export interface CarouselProps
 type CarouselProps = {
@@ -77,37 +78,31 @@ export default function Carousel({ CarouselHats }: CarouselProps) {
 	}, [currentSlide, isOverlayActive]);
 
 	return (
-		<div className="w-full h-3/4 flex justify-center items-center">
-			<div className="relative flex items-center w-full max-w-6xl">
-				{/*Cards*/}
-				<div className="flex justify-center gap-6 w-full h-full p-12">
-					{currentHats.map((hat) => (
-						<div key={hat.id} className="flex grow max-w-xs">
-							<ItemCard
-								hat={hat}
-								overlayStatus={(isOpen) =>
-									handleOverlayChange(hat.id, isOpen)
-								}
-							/>
-						</div>
-					))}
-				</div>
-
-				{/* Navigation Buttons*/}
-				<button
-					onClick={prevSlide}
-					className="absolute left-0 top-1/2 p-3"
-				>
+		<div>
+			<h1 className="text-left ml-6">Popular Items</h1>
+			<Grid
+				container
+				spacing={{ xs: 2, md: 3 }}
+				columns={{ xs: 4, sm: 8, md: 12 }}
+				alignItems="center"
+			>
+				<button onClick={prevSlide} className="absolute left-0 p-3">
 					<SlArrowLeft className="text-primary w-6 h-6 hover:text-primary-accent" />
 				</button>
-
-				<button
-					onClick={nextSlide}
-					className="absolute right-0 top-1/2 p-3"
-				>
+				{currentHats.map((hat) => (
+					<Grid size={4}>
+						<ItemCard
+							hat={hat}
+							overlayStatus={(isOpen) =>
+								handleOverlayChange(hat.id, isOpen)
+							}
+						/>
+					</Grid>
+				))}
+				<button onClick={nextSlide} className="absolute right-0 p-3">
 					<SlArrowRight className="text-primary w-6 h-6 hover:text-primary-accent" />
 				</button>
-			</div>
+			</Grid>
 		</div>
 	);
 }

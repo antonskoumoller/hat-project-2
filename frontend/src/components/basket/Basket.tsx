@@ -12,16 +12,16 @@ export default function Basket() {
 		<div>
 			<div className="flex gap-5 justify-between mb-2 p-2">
 				<div className="basis-2/12 grow text-left md:font-bold">
-					Product
+					<h1>Product</h1>
 				</div>
 				<div className="basis-6/12 grow text-left md:font-bold">
-					Description
+					<h1>Description</h1>
 				</div>
 				<div className="basis-2/12 grow text-left md:font-bold">
-					Quantity
+					<h1>Quantity</h1>
 				</div>
 				<div className="basis-2/12 grow text-left md:font-bold">
-					Price
+					 <h1>Price</h1>
 				</div>
 			</div>
 			<div>

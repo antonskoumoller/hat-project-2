@@ -97,13 +97,13 @@ export default function LoginPage() {
         //stylecreates flex-container where child is in center
         <div className="flex justify-center">
             {/* style: child is form, which is flex in column-style of fixed size */}
-            <form className="flex flex-col h-50 w-50 sm:h-100 sm:w-100 border justify-center shrink-0" onSubmit={handleSubmit}>
+            <form className="flex flex-col w-full max-w-md border border-primary p-4 justify-center shrink-0" onSubmit={handleSubmit}>
                     {/* style: This column entry has label and input in each end with given margins */}
                     <div className="flex justify-between text-sm ml-2 mr-2 sm:text-base sm:ml-8 sm:mr-8">
                         {/* label associated to element with id specified in htmlFor */}
                         <label className="" htmlFor="name-input"> Full name:  </label>
                         {/* input-field */}
-                        <input className="border rounded-sm w-1/2 sm:w-2/3"
+                        <input className="border border-primary rounded-sm w-1/2 sm:w-2/3"
                             id="name-input"
                             name="fullName"
                             onChange={handleInputChange}
@@ -117,7 +117,7 @@ export default function LoginPage() {
         
                 <div className="flex justify-between text-sm ml-2 mr-2 sm:text-base sm:ml-8 sm:mr-8">
                     <label className="" htmlFor="email-input"> Email adress: </label>
-                    <input className="border rounded-sm w-1/2 sm:w-2/3"
+                    <input className="border border-primary  rounded-sm w-1/2 sm:w-2/3"
                         id="email-input"
                         name="email"
                         onChange={handleInputChange}
@@ -129,7 +129,7 @@ export default function LoginPage() {
         
                 <div className="flex justify-between text-sm ml-2 mr-2 sm:text-base sm:ml-8 sm:mr-8">
                     <label className="" htmlFor="password-input"> Password: </label>
-                    <input className="border rounded-sm w-1/2 sm:w-2/3"
+                    <input className="border border-primary rounded-sm w-1/2 sm:w-2/3"
                         type="password" //hides password
                         id="password-input"
                         name="password"
@@ -142,15 +142,15 @@ export default function LoginPage() {
         
                 <div className="flex justify-center text-sm sm:text-base gap-2 mt-2">
                     {/* the submit-button */}
-                    <button className="w-1/3" type="submit"> Login </button>
+                    <button className="btn-primary" type="submit"> Login </button>
                     {/* button that doesn't perform submit-action */}
-                    <button className="w-1/3" type="button" onClick={clearForm}> Cancel </button>
+                    <button className="btn-secondary" type="button" onClick={clearForm}> Cancel </button>
                 </div>
                 <div className="flex justify-center text-sm sm:text-base gap-2 mt-2">
                     {/* the submit-button */}
-                    <button className="w-1/3" type="button" onClick={registerUser}> Register </button>
+                    <button className="btn-primary" type="button" onClick={registerUser}> Register </button>
                     {/* button that doesn't perform submit-action */}
-                    <button className="w-1/3" type="button" onClick={clearForm}> Unregister </button>
+                    <button className="btn-secondary" type="button" onClick={clearForm}> Unregister </button>
                 </div>
             
                 
