@@ -9,12 +9,8 @@ type CarouselProps = {
 };
 
 export default function Carousel({ CarouselHats }: CarouselProps) {
-	// useStates; index for the current slide, id of hatItem if open overlay, hats according to screensize
-	// one holding the id of hat-item opened in the overlay, one holding
-	const [currentSlide, setCurrentSlide] = useState(0);
-	const [openOverlayIds, setOpenOverlayIds] = useState<Set<number>>(
-		new Set()
-	);
+	// useStates; index for the current slide and number of hats pr slide
+	const [currentSlideCount, setCurrentSlideCount] = useState(0);
 	const [hatsPerSlide, setHatsPerSlide] = useState(hatsAccToScreen());
 
 	// Hats according to screen size
@@ -32,50 +28,24 @@ export default function Carousel({ CarouselHats }: CarouselProps) {
 		return () => window.removeEventListener("resize", handleResize);
 	}, []);
 
-	// Handling changes in overlay
-	const isOverlayActive = openOverlayIds.size > 0;
-	const handleOverlayChange = (id: number, isOpen: boolean) => {
-		setOpenOverlayIds((prev) => {
-			const countOpenOverlays = new Set(prev);
-			if (isOpen) {
-				countOpenOverlays.add(id);
-			} else {
-				countOpenOverlays.delete(id);
-			}
-			return countOpenOverlays;
-		});
-	};
-
 	// Creating slides for the carousel
 	const numOfSlides = Math.ceil(CarouselHats.length / hatsPerSlide);
-	const startHat = currentSlide * hatsPerSlide;
+	const startHat = currentSlideCount * hatsPerSlide;
 	const currentHats = CarouselHats.slice(startHat, startHat + hatsPerSlide);
 
 	// Navigation next slide
 	function nextSlide() {
-		setCurrentSlide((prevSlide) =>
-			prevSlide >= numOfSlides - 1 ? 0 : prevSlide + 1
+		setCurrentSlideCount((slideCount) =>
+			slideCount >= numOfSlides - 1 ? 0 : slideCount + 1
 		);
 	}
 
 	// Navigation previous slide
 	function prevSlide() {
-		setCurrentSlide((prevSlide) =>
-			prevSlide <= 0 ? numOfSlides - 1 : prevSlide - 1
+		setCurrentSlideCount((slideCount) =>
+			slideCount <= 0 ? numOfSlides - 1 : slideCount - 1
 		);
 	}
-
-	// Setting up a timer to change slide every 7. second
-	useEffect(() => {
-		if (!isOverlayActive) {
-			const timer = setInterval(() => {
-				nextSlide();
-			}, 7000);
-
-			// Clearing the timer when the component rerenders
-			return () => clearInterval(timer);
-		}
-	}, [currentSlide, isOverlayActive]);
 
 	return (
 		<div>
@@ -91,12 +61,7 @@ export default function Carousel({ CarouselHats }: CarouselProps) {
 				</button>
 				{currentHats.map((hat) => (
 					<Grid size={4}>
-						<ItemCard
-							hat={hat}
-							overlayStatus={(isOpen) =>
-								handleOverlayChange(hat.id, isOpen)
-							}
-						/>
+						<ItemCard hat={hat} />
 					</Grid>
 				))}
 				<button onClick={nextSlide} className="absolute right-0 p-3">
