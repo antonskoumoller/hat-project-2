@@ -69,7 +69,7 @@ export default function ProductPage() {
 					alignItems: "center",
 					flexWrap: "wrap",
 					marginBottom: 2,
-					padding: 1
+					padding: 4
 				}}
 			>
 				<ThemeProvider theme={theme}>
@@ -142,6 +142,7 @@ export default function ProductPage() {
 				spacing={{ xs: 2, md: 3 }}
 				columns={{ xs: 4, sm: 8, md: 12 }}
 				alignItems="center"
+				paddingLeft={4}
 			>
 				{filteredHats.map((hat) => (
 					<ItemCard hat={hat} />
