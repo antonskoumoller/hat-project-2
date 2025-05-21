@@ -7,19 +7,13 @@ type User = {
 	email: string;
 };
 
-//Maybe add fullname here
-type LoginCredentials = {
-	name: string
-	email: string;
-	password: string;
-};
-
 type LoginContextType = {
 	user: User | null;
 	isLoggedIn: boolean;
 	login: (credentials: LoginInfo) => void;
 	logout: () => void;
 	register: (credentials: LoginInfo) => void;
+	unregister: (credentials: LoginInfo) => void;
 };
 
 const LoginContext = createContext<LoginContextType | undefined>(undefined);
@@ -28,11 +22,10 @@ export function LoginProvider({ children }: { children: React.ReactNode }) {
 	const [user, setUser] = useState<User | null>(null);
 
 	function login(credentials: LoginInfo) {
-		// Some login validation from the other login thing***
 				fetch(`http://localhost:3000/customers/${encodeURIComponent(credentials.email)}`)
 				.then((res) => {
 					if(res.status===404){
-						alert(`user with mail ${credentials.email} doesn't exist`)
+						res.json().then(res=>alert(res.error))
 						return null;
 					}else{
 						return res.json()}
@@ -66,7 +59,7 @@ export function LoginProvider({ children }: { children: React.ReactNode }) {
 				})
 				.then((res) => {
 					if(res.status===409){
-						alert(`user with mail ${credentials.email} already exist`)
+						res.json().then(res => alert(res.error));
 					}else{
 						setUser({
 							name: credentials.fullName,
@@ -80,6 +73,24 @@ export function LoginProvider({ children }: { children: React.ReactNode }) {
 				});
 	}
 
+	function unregister(credentials: LoginInfo) {
+		fetch(`http://localhost:3000/customers/${encodeURIComponent(credentials.email)}`,
+		{
+			method: "DELETE",
+		})
+		.then((res) => {
+			if(res.status===404){
+				res.json().then(res => alert(res.error));
+			}else{
+				logout();
+				alert("You are now unregistered - we hope to see you back soon!")
+			}
+		})
+		.catch((err) => {
+			console.error(err)
+		});
+}
+
 	function logout() {
 		setUser(null);
 	}
@@ -89,7 +100,8 @@ export function LoginProvider({ children }: { children: React.ReactNode }) {
 		isLoggedIn: !!user,
 		login,
 		logout,
-		register
+		register,
+		unregister
 	};
 
 	return (

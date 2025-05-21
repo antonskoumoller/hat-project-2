@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LoginProvider, useLogin } from "../context/LoginContext";
+import { useLogin } from "../context/LoginContext";
 import { useNavigate } from "react-router-dom";
 
 export type LoginInfo = {
@@ -25,7 +25,7 @@ export default function LoginPage() {
 	const [infoErrors, setInfoErrors] = useState<InfoErrors>({});
 
 	const loginContext = useLogin();
-	const { login, register, logout } = loginContext;
+	const { login, register, unregister, logout } = loginContext;
 	const navigate = useNavigate();
 
 	//validation-functions for individual fields
@@ -109,6 +109,16 @@ export default function LoginPage() {
 			alert("Provided info not valid!");
 		} else {
 			register(loginInfo);
+			clearForm();
+		}
+	};
+
+	const unregisterUser = (e: React.FormEvent) => {
+		const validation = validate();
+		if (validation.fullName || validation.email || validation.password) {
+			alert("Provided info not valid!");
+		} else {
+			unregister(loginInfo);
 			clearForm();
 		}
 	};
@@ -267,7 +277,7 @@ export default function LoginPage() {
 						<button
 							className="btn-secondary"
 							type="button"
-							onClick={clearForm}
+							onClick={unregisterUser}
 						>
 							{" "}
 							Unregister{" "}
