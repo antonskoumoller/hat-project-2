@@ -113,6 +113,7 @@ export default function LoginPage() {
 		}
 	};
 
+	// This is rendered if user is already logged in
 	if (loginContext.isLoggedIn) {
 		return (
 			<div className="columns-1 flex-col justify-center pt-4">
@@ -137,6 +138,7 @@ export default function LoginPage() {
 			</div>
 		);
 	} else
+		// This is rendered if user is not logged in
 		return (
 			//stylecreates flex-container where child is in center
 			<div className="flex justify-center pt-4">
