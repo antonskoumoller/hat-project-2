@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLogin } from "../context/LoginContext";
-import { useNavigate } from "react-router-dom";
+import LoggedInPage from "../components/login/LoggedInPage";
 
 export type LoginInfo = {
 	fullName: string;
@@ -25,8 +25,7 @@ export default function LoginPage() {
 	const [infoErrors, setInfoErrors] = useState<InfoErrors>({});
 
 	const loginContext = useLogin();
-	const { login, register, unregister, logout } = loginContext;
-	const navigate = useNavigate();
+	const { login, register } = loginContext;
 
 	//validation-functions for individual fields
 	const validateFullName = (name: string): InfoErrors => {
@@ -115,38 +114,8 @@ export default function LoginPage() {
 
 	// This is rendered if user is already logged in
 	if (loginContext.isLoggedIn) {
-		return (
-			<div className="columns-1 flex-col justify-center pt-4">
-				{/* style: child is form, which is flex in column-style of fixed size */}
-				<h2 className="p-4">
-					{" "}
-					You are currently logged in as {loginContext.user?.name}
-				</h2>
-				<div className="flex justify-center flex-wrap text-sm sm:text-base">
-					<button
-						className="btn-primary m-3"
-						onClick={() => navigate("/product")}
-					>
-						{" "}
-						Go shopping
-					</button>
-					<button
-						className="btn-primary m-3"
-						onClick={() => navigate("/basket")}
-					>
-						{" "}
-						Basket
-					</button>
-					<button className="btn-secondary m-3" onClick={logout}>
-						{" "}
-						Log out
-					</button>
-					<button className="btn-secondary m-3" onClick={unregister}>
-						{" "}
-						Unregister
-					</button>
-				</div>
-			</div>
+		return(
+			<LoggedInPage></LoggedInPage>
 		);
 	} else
 		// This is rendered if user is not logged in
