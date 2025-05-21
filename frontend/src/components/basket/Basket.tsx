@@ -10,19 +10,8 @@ export default function Basket() {
 
 	return (
 		<div>
-			<div className="flex gap-5 justify-between mb-2 p-2">
-				<div className="basis-2/12 grow text-left md:font-bold">
-					<h1>Product</h1>
-				</div>
-				<div className="basis-6/12 grow text-left md:font-bold">
-					<h1>Description</h1>
-				</div>
-				<div className="basis-2/12 grow text-left md:font-bold">
-					<h1>Quantity</h1>
-				</div>
-				<div className="basis-2/12 grow text-left md:font-bold">
-					 <h1>Price</h1>
-				</div>
+			<div>
+				<h1>Basket Contents</h1>
 			</div>
 			<div>
 				{items.map((item) => (
