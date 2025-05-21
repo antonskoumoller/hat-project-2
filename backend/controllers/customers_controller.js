@@ -28,7 +28,7 @@ async function insertCustomer(req, res) {
 	try {
 		let row = await customers.getCustomerWithId(email);
 		if (row !== undefined) {
-			res.status(409).json({ error: `Customer with id ${email} already exists`});
+			res.status(409).json({ error: `Customer with id: ${email}, already exists`});
 			return;
 		}
 		await customers.insertCustomer(name, email, password);
@@ -132,10 +132,10 @@ async function insertIntoBasket(req, res) {
 	try {
 		await customers.insertIntoBasket(customer_id, product_id);
 		res.status(201).send(
-			`Product with ID: ${product_id} added to customer with ID: ${customer_id}`
+			`Product with id: ${product_id} added to customer with id: ${customer_id}`
 		);
 	} catch (err) {
-		console.error("Error creating updating basketEntry:", err.message);
+		console.error("Error adding product to basket:", err.message);
 		res.status(500).json({ error: "Internal server error" });
 	}
 }
@@ -166,7 +166,7 @@ async function emptyBasket(req, res) {
 	try {
 		await customers.emptyBasket(customerId);
 		res.status(200).json({
-			message: `Basket for customer ${customerId} is now emptied`
+			message: `Basket for customer with id: ${customerId} is now emptied`
 		});
 	} catch (err) {
 		console.error("Error emptying basket:", err.message);
@@ -198,7 +198,7 @@ async function deleteOneProductFromBasket(req, res) {
 	try {
 		await customers.deleteOneProductFromBasket(customer_id, product_id);
 		res.status(200).send(
-			`Product with ID: ${product_id} decremented for customer with ID: ${customer_id}`
+			`Product with id: ${product_id} decremented for customer with id: ${customer_id}`
 		);
 	} catch (err) {
 		console.error("Error updating basketEntry:", err.message);
