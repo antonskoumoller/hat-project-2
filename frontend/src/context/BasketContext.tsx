@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+	createContext,
+	useContext,
+	useState,
+	useEffect,
+	useCallback
+} from "react";
 import type { BasketItemProps } from "../components/basket/BasketItem";
 import { HatItem } from "../components/ItemCard";
 import { useLogin } from "./LoginContext";
@@ -6,6 +12,7 @@ import { useLogin } from "./LoginContext";
 type BasketContextType = {
 	items: BasketItemProps[];
 	totalPrice: number;
+	refreshBasket: () => void;
 	addItem: (hat: HatItem) => void;
 	removeItem: (hat: HatItem) => void;
 	clearBasket: () => void;
@@ -14,56 +21,28 @@ type BasketContextType = {
 const BasketContext = createContext<BasketContextType | undefined>(undefined);
 
 export function BasketProvider({ children }: { children: React.ReactNode }) {
-	const [items, setItems] = useState<BasketItemProps[]>(() => {
-		if (typeof window === "undefined") return [];
-		const stored = localStorage.getItem("guest_basket");
-		if (stored) {
-			try {
-				return JSON.parse(stored);
-			} catch {
-				return [];
-			}
-		}
-		return [];
-	});
-
+	const [items, setItems] = useState<BasketItemProps[]>([]);
 	const [totalPrice, setTotalPrice] = useState<number>(0);
 	const { isLoggedIn, user } = useLogin();
 
-	useEffect(() => {
-		if (isLoggedIn && user?.email) {
-			fetch(`http://localhost:3000/customers/${encodeURIComponent(user.email)}/basket`)
-				.then((res) => res.json())
-				.then((data) => setItems(data))
-				.catch((err) => console.error(err));
-		}
-	}, [isLoggedIn, user?.email]);
+	const activeEmail = isLoggedIn && user?.email ? user.email : "guest";
+
+	// Fetch basket from backend
+	const refreshBasket = useCallback(() => {
+		fetch(
+			`http://localhost:3000/customers/${encodeURIComponent(activeEmail)}/basket`
+		)
+			.then((res) => res.json())
+			.then((data) => setItems(data))
+			.catch((err) => {
+				console.error("Failed to fetch basket:", err);
+				setItems([]);
+			});
+	}, [activeEmail]);
 
 	useEffect(() => {
-		if (!isLoggedIn) {
-			const stored = localStorage.getItem("guest_basket");
-			if (stored) {
-				try {
-					const parsed = JSON.parse(stored);
-					setItems(parsed);
-				} catch (err) {
-					console.error("Invalid basket in localStorage:", err);
-				}
-			}
-		}
-	}, [isLoggedIn]);
-
-	useEffect(() => {
-		if (!isLoggedIn) {
-			localStorage.setItem("guest_basket", JSON.stringify(items));
-		}
-	}, [items, isLoggedIn]);
-
-	useEffect(() => {
-		if (isLoggedIn) {
-			localStorage.removeItem("guest_basket");
-		}
-	}, [isLoggedIn]);
+		refreshBasket();
+	}, [refreshBasket]);
 
 	useEffect(() => {
 		const total = items.reduce(
@@ -72,103 +51,33 @@ export function BasketProvider({ children }: { children: React.ReactNode }) {
 		);
 		setTotalPrice(total);
 	}, [items]);
-	// Add or increment item
+
+	// Add an item to the basket
 	function addItem(hat: HatItem) {
-		setItems((prev) => {
-			const existing = prev.find((i) => i.id === hat.id);
-			if (existing) {
-				const updated = prev.map((i) =>
-					i.id === hat.id ? { ...i, quantity: i.quantity + 1 } : i
-				);
-
-				if (isLoggedIn && user?.email) {
-					fetch(
-						`http://localhost:3000/customers/${encodeURIComponent(user.email)}/basket/${hat.id}`,
-						{
-							method: "POST"
-						}
-					).catch((err) =>
-						console.error("Error incrementing basket item:", err)
-					);
-				}
-
-				return updated;
-			}
-			//TODO: maybe this needs to be changed
-			const newItem: BasketItemProps = {
-				...hat,
-				customer_id: isLoggedIn ? user!.email : "demo@mail.com",
-				quantity: 1
-			};
-
-			if (isLoggedIn && user?.email) {
-				fetch(
-					`http://localhost:3000/customers/${encodeURIComponent(user.email)}/basket/${hat.id}`,
-					{
-						method: "POST"
-					}
-				).catch((err) =>
-					console.error("Error adding new item to basket:", err)
-				);
-			}
-
-			return [...prev, newItem];
-		});
+		fetch(
+			`http://localhost:3000/customers/${encodeURIComponent(activeEmail)}/basket/${hat.id}`,
+			{ method: "POST" }
+		)
+			.then(() => refreshBasket())
+			.catch((err) => console.error("Add item failed:", err));
 	}
-
+	// Remove an item from the basket
 	function removeItem(hat: HatItem) {
-		const basketItem = items.find((i) => i.id === hat.id);
-		if (!basketItem) return;
-
-		const newQuantity = basketItem.quantity - 1;
-
-		if (newQuantity === 0) {
-			// Update local state
-			setItems((prev) => prev.filter((i) => i.id !== hat.id));
-
-			// If logged in, delete item from backend
-			if (isLoggedIn && user?.email) {
-				fetch(
-					`http://localhost:3000/customers/${user.email}/basket/${hat.id}`,
-					{
-						method: "DELETE"
-					}
-				).catch((err) =>
-					console.error("Error deleting from basket:", err)
-				);
-			}
-
-			return;
-		}
-
-		// Decrease quantity locally
-		setItems((prev) =>
-			prev.map((i) =>
-				i.id === hat.id ? { ...i, quantity: newQuantity } : i
-			)
-		);
-
-		// Sync to backend if logged in
-		if (isLoggedIn && user?.email) {
-			fetch(
-				`http://localhost:3000/customers/${encodeURIComponent(user.email)}/basket/${hat.id}`,
-				{
-					method: "PUT"
-				}
-			).catch((err) =>
-				console.error("Error decrementing basket item:", err)
-			);
-		}
+		fetch(
+			`http://localhost:3000/customers/${encodeURIComponent(activeEmail)}/basket/${hat.id}`,
+			{ method: "PUT" } // decrement quantity
+		)
+			.then(() => refreshBasket())
+			.catch((err) => console.error("Remove item failed:", err));
 	}
-
+	// Remove everything from the basket
 	function clearBasket() {
-		setItems([]);
-
-		if (isLoggedIn && user?.email) {
-			fetch(`http://localhost:3000/customers/${encodeURIComponent(user.email)}/basket`, {
-				method: "DELETE"
-			}).catch((err) => console.error("Error clearing basket:", err));
-		}
+		fetch(
+			`http://localhost:3000/customers/${encodeURIComponent(activeEmail)}/basket`,
+			{ method: "DELETE" }
+		)
+			.then(() => setItems([]))
+			.catch((err) => console.error("Clear basket failed:", err));
 	}
 
 	return (
@@ -178,7 +87,8 @@ export function BasketProvider({ children }: { children: React.ReactNode }) {
 				totalPrice,
 				addItem,
 				removeItem,
-				clearBasket
+				clearBasket,
+				refreshBasket
 			}}
 		>
 			{children}
