@@ -13,7 +13,7 @@ type LoginContextType = {
 	login: (credentials: LoginInfo) => void;
 	logout: () => void;
 	register: (credentials: LoginInfo) => void;
-	unregister: (credentials: LoginInfo) => void;
+	unregister: () => void;
 };
 
 const LoginContext = createContext<LoginContextType | undefined>(undefined);
@@ -73,8 +73,10 @@ export function LoginProvider({ children }: { children: React.ReactNode }) {
 				});
 	}
 
-	function unregister(credentials: LoginInfo) {
-		fetch(`http://localhost:3000/customers/${encodeURIComponent(credentials.email)}`,
+	function unregister() {
+		//The ! postfix asserts that user is not null.
+		//This is possible, as this function will only be called when logged in
+		fetch(`http://localhost:3000/customers/${encodeURIComponent(user!.email)}`,
 		{
 			method: "DELETE",
 		})

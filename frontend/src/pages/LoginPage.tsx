@@ -103,22 +103,12 @@ export default function LoginPage() {
 	};
 
 	//for processing submission of input
-	const registerUser = (e: React.FormEvent) => {
+	const registerUser = () => {
 		const validation = validate();
 		if (validation.fullName || validation.email || validation.password) {
 			alert("Provided info not valid!");
 		} else {
 			register(loginInfo);
-			clearForm();
-		}
-	};
-
-	const unregisterUser = (e: React.FormEvent) => {
-		const validation = validate();
-		if (validation.fullName || validation.email || validation.password) {
-			alert("Provided info not valid!");
-		} else {
-			unregister(loginInfo);
 			clearForm();
 		}
 	};
@@ -150,6 +140,10 @@ export default function LoginPage() {
 					<button className="btn-secondary m-3" onClick={logout}>
 						{" "}
 						Log out
+					</button>
+					<button className="btn-secondary m-3" onClick={unregister}>
+						{" "}
+						Unregister
 					</button>
 				</div>
 			</div>
@@ -272,15 +266,6 @@ export default function LoginPage() {
 						>
 							{" "}
 							Register{" "}
-						</button>
-						{/* button that doesn't perform submit-action */}
-						<button
-							className="btn-secondary"
-							type="button"
-							onClick={unregisterUser}
-						>
-							{" "}
-							Unregister{" "}
 						</button>
 					</div>
 				</form>
