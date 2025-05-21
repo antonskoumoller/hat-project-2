@@ -88,7 +88,7 @@ export default function BasketItem(basketItem: BasketItemProps) {
 					</div>
 
 					<div className="basis-2/12 grow flex self-center justify-center text-md md:text-xl font-bold">
-						<p>{basketItem.price * basketItem.quantity} kr</p>
+						<p>${basketItem.price * basketItem.quantity}</p>
 					</div>
 				</div>
 			</div>

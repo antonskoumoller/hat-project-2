@@ -37,7 +37,7 @@ export default function Basket() {
 				<div className="basis-4/12 grow flex justify-end items-end gap-2">
 					<span className="text-md sm:text-xl">Total:</span>
 					<span className="text-md sm:text-3xl font-bold">
-						{totalPrice} kr
+						${totalPrice}
 					</span>
 				</div>
 			</div>
