@@ -16,11 +16,11 @@ export const ShowProductOverlay = ({
 		<>
 			{hat && (
 				<div
-					className="fixed flex justify-center items-center top-0 left-0 w-full h-full bg-black/50 z-[1000] p-5"
+					className="fixed flex justify-center items-center top-0 left-0 w-full h-full bg-black/50 z-[1000] p-5 overflow-auto"
 					onClick={onClose}
 				>
 					<div
-						className="relative flex flex-col h-[400px] bg-white p-5 rounded-xl"
+						className="relative flex flex-col bg-white p-5 rounded-xl w-full max-w-2xl"
 						onClick={(e) => e.stopPropagation()}
 					>
 						<div className="flex flex-col md:flex-row gap-5 flex-grow overflow-auto">
