@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { LoginProvider, useLogin } from "../context/LoginContext";
+import { useNavigate } from "react-router-dom";
 
 export type LoginInfo = {
 	fullName: string;
@@ -24,7 +25,8 @@ export default function LoginPage() {
 	const [infoErrors, setInfoErrors] = useState<InfoErrors>({});
 
 	const loginContext = useLogin();
-	const { login, register } = loginContext;
+	const { login, register, logout } = loginContext;
+	const navigate = useNavigate();
 
 	//validation-functions for individual fields
 	const validateFullName = (name: string): InfoErrors => {
@@ -111,134 +113,158 @@ export default function LoginPage() {
 		}
 	};
 
-	return (
-		//stylecreates flex-container where child is in center
-		<div className="flex justify-center pt-4">
-			{/* style: child is form, which is flex in column-style of fixed size */}
-			<form
-				className="flex flex-col w-full max-w-md border border-primary rounded p-4 justify-center shrink-0"
-				onSubmit={handleSubmit}
-			>
-				{/* style: This column entry has label and input in each end with given margins */}
-				<div className="flex justify-between text-sm ml-2 mr-2 sm:text-base sm:ml-8 sm:mr-8">
-					{/* label associated to element with id specified in htmlFor */}
-					<label className="" htmlFor="name-input">
-						{" "}
-						Full name:{" "}
-					</label>
-					{/* input-field */}
-					<input
-						className="border border-primary rounded-sm w-1/2 sm:w-2/3"
-						id="name-input"
-						name="fullName"
-						onChange={handleInputChange}
-						value={loginInfo.fullName}
-						placeholder="your full name"
-					/>
-				</div>
-				{/* inline error-message for ivalid input (adds invisible line if no error-message, for styling purposes)*/}
-				{infoErrors.fullName ? (
-					<p
-						className="flex justify-start text-xs ml-10 sm:ml-27 sm:text-base"
-						style={{ color: "red" }}
-					>
-						{" "}
-						{infoErrors.fullName}
-					</p>
-				) : (
-					<p className="invisible text-xs sm:text-base">*</p>
-				)}
-
-				<div className="flex justify-between text-sm ml-2 mr-2 sm:text-base sm:ml-8 sm:mr-8">
-					<label className="" htmlFor="email-input">
-						{" "}
-						Email adress:{" "}
-					</label>
-					<input
-						className="border border-primary  rounded-sm w-1/2 sm:w-2/3"
-						id="email-input"
-						name="email"
-						onChange={handleInputChange}
-						value={loginInfo.email}
-						placeholder="your@email.tld"
-					/>
-				</div>
-				{infoErrors.email ? (
-					<p
-						className="flex justify-start text-xs ml-10 sm:ml-27 sm:text-base"
-						style={{ color: "red" }}
-					>
-						{" "}
-						{infoErrors.email}
-					</p>
-				) : (
-					<p className="invisible text-xs sm:text-base">*</p>
-				)}
-
-				<div className="flex justify-between text-sm ml-2 mr-2 sm:text-base sm:ml-8 sm:mr-8">
-					<label className="" htmlFor="password-input">
-						{" "}
-						Password:{" "}
-					</label>
-					<input
-						className="border border-primary rounded-sm w-1/2 sm:w-2/3"
-						type="password" //hides password
-						id="password-input"
-						name="password"
-						onChange={handleInputChange}
-						value={loginInfo.password}
-						placeholder="*****"
-					/>
-				</div>
-				{infoErrors.password ? (
-					<p
-						className="flex justify-start text-xs ml-10 sm:ml-27 sm:text-base"
-						style={{ color: "red" }}
-					>
-						{" "}
-						{infoErrors.password}
-					</p>
-				) : (
-					<p className="invisible text-xs sm:text-base">*</p>
-				)}
-
-				<div className="flex justify-center text-sm sm:text-base gap-2 mt-2">
-					{/* the submit-button */}
-					<button className="btn-primary" type="submit">
-						{" "}
-						Login{" "}
-					</button>
-					{/* button that doesn't perform submit-action */}
+	if (loginContext.isLoggedIn) {
+		return (
+			<div className="columns-1 flex-col justify-center pt-4">
+				{/* style: child is form, which is flex in column-style of fixed size */}
+				<h2 className="p-4">
+					{" "}
+					You are currently logged in as {loginContext.user?.name}
+				</h2>
+				<div className="flex justify-center ">
 					<button
-						className="btn-secondary"
-						type="button"
-						onClick={clearForm}
+						className="btn-primary m-3"
+						onClick={() => navigate("/product")}
 					>
 						{" "}
-						Cancel{" "}
+						Go shopping
+					</button>
+					<button className="btn-secondary m-3" onClick={logout}>
+						{" "}
+						Log out
 					</button>
 				</div>
-				<div className="flex justify-center text-sm sm:text-base gap-2 mt-2">
-					{/* the submit-button */}
-					<button
-						className="btn-primary"
-						type="button"
-						onClick={registerUser}
-					>
-						{" "}
-						Register{" "}
-					</button>
-					{/* button that doesn't perform submit-action */}
-					<button
-						className="btn-secondary"
-						type="button"
-						onClick={clearForm}
-					>
-						{" "}
-						Unregister{" "}
-					</button>
-				</div>
-			</form>
-		</div>
-	);
+			</div>
+		);
+	} else
+		return (
+			//stylecreates flex-container where child is in center
+			<div className="flex justify-center pt-4">
+				{/* style: child is form, which is flex in column-style of fixed size */}
+				<form
+					className="flex flex-col w-full max-w-md border border-primary rounded p-4 justify-center shrink-0"
+					onSubmit={handleSubmit}
+				>
+					{/* style: This column entry has label and input in each end with given margins */}
+					<div className="flex justify-between text-sm ml-2 mr-2 sm:text-base sm:ml-8 sm:mr-8">
+						{/* label associated to element with id specified in htmlFor */}
+						<label className="" htmlFor="name-input">
+							{" "}
+							Full name:{" "}
+						</label>
+						{/* input-field */}
+						<input
+							className="border border-primary rounded-sm w-1/2 sm:w-2/3"
+							id="name-input"
+							name="fullName"
+							onChange={handleInputChange}
+							value={loginInfo.fullName}
+							placeholder="your full name"
+						/>
+					</div>
+					{/* inline error-message for ivalid input (adds invisible line if no error-message, for styling purposes)*/}
+					{infoErrors.fullName ? (
+						<p
+							className="flex justify-start text-xs ml-10 sm:ml-27 sm:text-base"
+							style={{ color: "red" }}
+						>
+							{" "}
+							{infoErrors.fullName}
+						</p>
+					) : (
+						<p className="invisible text-xs sm:text-base">*</p>
+					)}
+
+					<div className="flex justify-between text-sm ml-2 mr-2 sm:text-base sm:ml-8 sm:mr-8">
+						<label className="" htmlFor="email-input">
+							{" "}
+							Email adress:{" "}
+						</label>
+						<input
+							className="border border-primary  rounded-sm w-1/2 sm:w-2/3"
+							id="email-input"
+							name="email"
+							onChange={handleInputChange}
+							value={loginInfo.email}
+							placeholder="your@email.tld"
+						/>
+					</div>
+					{infoErrors.email ? (
+						<p
+							className="flex justify-start text-xs ml-10 sm:ml-27 sm:text-base"
+							style={{ color: "red" }}
+						>
+							{" "}
+							{infoErrors.email}
+						</p>
+					) : (
+						<p className="invisible text-xs sm:text-base">*</p>
+					)}
+
+					<div className="flex justify-between text-sm ml-2 mr-2 sm:text-base sm:ml-8 sm:mr-8">
+						<label className="" htmlFor="password-input">
+							{" "}
+							Password:{" "}
+						</label>
+						<input
+							className="border border-primary rounded-sm w-1/2 sm:w-2/3"
+							type="password" //hides password
+							id="password-input"
+							name="password"
+							onChange={handleInputChange}
+							value={loginInfo.password}
+							placeholder="*****"
+						/>
+					</div>
+					{infoErrors.password ? (
+						<p
+							className="flex justify-start text-xs ml-10 sm:ml-27 sm:text-base"
+							style={{ color: "red" }}
+						>
+							{" "}
+							{infoErrors.password}
+						</p>
+					) : (
+						<p className="invisible text-xs sm:text-base">*</p>
+					)}
+
+					<div className="flex justify-center text-sm sm:text-base gap-2 mt-2">
+						{/* the submit-button */}
+						<button className="btn-primary" type="submit">
+							{" "}
+							Login{" "}
+						</button>
+						{/* button that doesn't perform submit-action */}
+						<button
+							className="btn-secondary"
+							type="button"
+							onClick={clearForm}
+						>
+							{" "}
+							Clear input{" "}
+						</button>
+					</div>
+					<div className="flex justify-center text-sm sm:text-base gap-2 mt-2">
+						{/* the submit-button */}
+						<button
+							className="btn-primary"
+							type="button"
+							onClick={registerUser}
+						>
+							{" "}
+							Register{" "}
+						</button>
+						{/* button that doesn't perform submit-action */}
+						<button
+							className="btn-secondary"
+							type="button"
+							onClick={clearForm}
+						>
+							{" "}
+							Unregister{" "}
+						</button>
+					</div>
+				</form>
+			</div>
+		);
 }
