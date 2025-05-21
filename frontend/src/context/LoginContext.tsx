@@ -1,10 +1,15 @@
 import React, { createContext, useContext, useState } from "react";
-import { LoginInfo } from "../pages/LoginPage";
 
 
 type User = {
 	name: string;
 	email: string;
+};
+
+export type LoginInfo = {
+	fullName: string;
+	email: string;
+	password: string;
 };
 
 type LoginContextType = {
