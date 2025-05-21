@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LoginProvider, useLogin } from "../context/LoginContext";
+import { useLogin } from "../context/LoginContext";
 import { useNavigate } from "react-router-dom";
 
 export type LoginInfo = {
@@ -25,7 +25,7 @@ export default function LoginPage() {
 	const [infoErrors, setInfoErrors] = useState<InfoErrors>({});
 
 	const loginContext = useLogin();
-	const { login, register, logout } = loginContext;
+	const { login, register, unregister, logout } = loginContext;
 	const navigate = useNavigate();
 
 	//validation-functions for individual fields
@@ -103,7 +103,7 @@ export default function LoginPage() {
 	};
 
 	//for processing submission of input
-	const registerUser = (e: React.FormEvent) => {
+	const registerUser = () => {
 		const validation = validate();
 		if (validation.fullName || validation.email || validation.password) {
 			alert("Provided info not valid!");
@@ -140,6 +140,10 @@ export default function LoginPage() {
 					<button className="btn-secondary m-3" onClick={logout}>
 						{" "}
 						Log out
+					</button>
+					<button className="btn-secondary m-3" onClick={unregister}>
+						{" "}
+						Unregister
 					</button>
 				</div>
 			</div>
@@ -262,15 +266,6 @@ export default function LoginPage() {
 						>
 							{" "}
 							Register{" "}
-						</button>
-						{/* button that doesn't perform submit-action */}
-						<button
-							className="btn-secondary"
-							type="button"
-							onClick={clearForm}
-						>
-							{" "}
-							Unregister{" "}
 						</button>
 					</div>
 				</form>
