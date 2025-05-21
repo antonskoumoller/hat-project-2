@@ -122,7 +122,7 @@ export default function LoginPage() {
 					{" "}
 					You are currently logged in as {loginContext.user?.name}
 				</h2>
-				<div className="flex justify-center ">
+				<div className="flex justify-center flex-wrap text-sm sm:text-base">
 					<button
 						className="btn-primary m-3"
 						onClick={() => navigate("/product")}
@@ -152,14 +152,14 @@ export default function LoginPage() {
 		// This is rendered if user is not logged in
 		return (
 			//stylecreates flex-container where child is in center
-			<div className="flex justify-center pt-4">
+			<div className="flex justify-center p-4">
 				{/* style: child is form, which is flex in column-style of fixed size */}
 				<form
-					className="flex flex-col w-full max-w-md border border-primary rounded p-4 justify-center shrink-0"
+					className="flex flex-col justify-center w-full max-w-md border border-primary rounded p-4"
 					onSubmit={handleSubmit}
 				>
 					{/* style: This column entry has label and input in each end with given margins */}
-					<div className="flex justify-between text-sm ml-2 mr-2 sm:text-base sm:ml-8 sm:mr-8">
+					<div className="flex justify-between text-sm mx-2 sm:text-base sm:mx-8">
 						{/* label associated to element with id specified in htmlFor */}
 						<label className="" htmlFor="name-input">
 							{" "}
@@ -188,13 +188,13 @@ export default function LoginPage() {
 						<p className="invisible text-xs sm:text-base">*</p>
 					)}
 
-					<div className="flex justify-between text-sm ml-2 mr-2 sm:text-base sm:ml-8 sm:mr-8">
+					<div className="flex justify-between text-sm mx-2 sm:text-base sm:mx-8">
 						<label className="" htmlFor="email-input">
 							{" "}
 							Email adress:{" "}
 						</label>
 						<input
-							className="border border-primary  rounded-sm w-1/2 sm:w-2/3"
+							className="border border-primary rounded-sm w-1/2 sm:w-2/3"
 							id="email-input"
 							name="email"
 							onChange={handleInputChange}
@@ -214,7 +214,7 @@ export default function LoginPage() {
 						<p className="invisible text-xs sm:text-base">*</p>
 					)}
 
-					<div className="flex justify-between text-sm ml-2 mr-2 sm:text-base sm:ml-8 sm:mr-8">
+					<div className="flex justify-between text-sm mx-2 sm:text-base sm:mx-8">
 						<label className="" htmlFor="password-input">
 							{" "}
 							Password:{" "}
@@ -241,31 +241,28 @@ export default function LoginPage() {
 						<p className="invisible text-xs sm:text-base">*</p>
 					)}
 
-					<div className="flex justify-center text-sm sm:text-base gap-2 mt-2">
+					<div className="flex justify-center text-sm sm:text-base flex-wrap">
 						{/* the submit-button */}
-						<button className="btn-primary" type="submit">
+						<button className="btn-primary m-2" type="submit">
 							{" "}
 							Login{" "}
 						</button>
-						{/* button that doesn't perform submit-action */}
+						{/* buttons that doen't perform submit-action */}
 						<button
-							className="btn-secondary"
-							type="button"
-							onClick={clearForm}
-						>
-							{" "}
-							Clear input{" "}
-						</button>
-					</div>
-					<div className="flex justify-center text-sm sm:text-base gap-2 mt-2">
-						{/* the submit-button */}
-						<button
-							className="btn-primary"
+							className="btn-primary m-2"
 							type="button"
 							onClick={registerUser}
 						>
 							{" "}
 							Register{" "}
+						</button>
+						<button
+							className="btn-secondary m-2"
+							type="button"
+							onClick={clearForm}
+						>
+							{" "}
+							Clear input{" "}
 						</button>
 					</div>
 				</form>
