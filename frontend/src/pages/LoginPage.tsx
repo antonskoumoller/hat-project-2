@@ -130,6 +130,13 @@ export default function LoginPage() {
 						{" "}
 						Go shopping
 					</button>
+					<button
+						className="btn-primary m-3"
+						onClick={() => navigate("/basket")}
+					>
+						{" "}
+						Basket
+					</button>
 					<button className="btn-secondary m-3" onClick={logout}>
 						{" "}
 						Log out

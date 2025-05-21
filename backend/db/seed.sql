@@ -4,6 +4,7 @@ INSERT INTO customers (name, email, password) VALUES ('Anne', 'anne@mail.com', '
 INSERT INTO customers (name, email, password) VALUES ('Anton Moller', 'anton@mail.com', 'password1');
 INSERT INTO customers (name, email, password) VALUES ('Sebastian', 'sebastian@mail.com', 'qwerty');
 INSERT INTO customers (name, email, password) VALUES ('Emil', 'emil@mail.com', 'emil123');
+INSERT INTO customers (name, email, password) VALUES ('guest', 'guest', 'guest');
 
 INSERT INTO products (id, name, img, description, fullDescription, category, popular, price, brand) VALUES
 (1, "Taco Hat", "/images/taco-hat.png", "Beautiful taco hat for parties and stuff", 
