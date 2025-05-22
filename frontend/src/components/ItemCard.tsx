@@ -14,6 +14,7 @@ export type HatItem = {
 	popular: boolean;
 	price: number;
 	brand: string;
+	color: string;
 };
 type Props = {
 	hat: HatItem;
