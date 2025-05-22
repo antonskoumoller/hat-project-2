@@ -100,7 +100,7 @@ export default function ProductPage() {
 
 					<FormControl sx={{ minWidth: 200 }}>
 						<InputLabel id="category-select-label">
-							Categories
+							Types
 						</InputLabel>
 						<Select
 							labelId="category-select-label"
