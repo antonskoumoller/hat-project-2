@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS products (
     category TEXT NOT NULL,
     popular BOOLEAN NOT NULL DEFAULT 0,
     price DECIMAL(10,2) NOT NULL,
-    brand TEXT NOT NULL
+    brand TEXT NOT NULL,
+    color TEXT NOT NULL
 );
 
 -- Create basketEntries

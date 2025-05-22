@@ -18,11 +18,6 @@ import {
 
 type HatItems = HatItem[];
 
-// type Props = {
-//   hats: HatItems;
-// };
-// { hats }: Props
-
 const hats: HatItems = await fetch("http://localhost:3000/products").then(
 	(res) => res.json()
 );
@@ -35,15 +30,18 @@ export default function ProductPage() {
 	const [selectedCategories, setSelectedCategories] = React.useState<
 		string[]
 	>([]);
+	const [selectedColors, setSelectedColors] = React.useState<string[]>([]);
 	{
 		/* Find unique brands and categories */
 	}
 	const brands = Array.from(new Set(hats.map((h) => h.brand)));
 	const categories = Array.from(new Set(hats.map((h) => h.category)));
+	const colors = Array.from(new Set(hats.map((h) => h.color)));
 
 	const clearFilters = () => {
 		setSelectedBrands([]);
 		setSelectedCategories([]);
+		setSelectedColors([]);
 	};
 
 	{
@@ -55,7 +53,9 @@ export default function ProductPage() {
 		const categoryMatch =
 			selectedCategories.length === 0 ||
 			selectedCategories.includes(hat.category);
-		return brandMatch && categoryMatch;
+		const colorMatch =
+			selectedColors.length === 0 || selectedColors.includes(hat.color);
+		return brandMatch && categoryMatch && colorMatch;
 	});
 
 	return (
@@ -122,6 +122,29 @@ export default function ProductPage() {
 										)}
 									/>
 									<ListItemText primary={category} />
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
+
+					<FormControl sx={{ minWidth: 200 }}>
+						<InputLabel id="color-select-label">Colors</InputLabel>
+						<Select
+							labelId="color-select-label"
+							multiple
+							value={selectedColors}
+							onChange={(e) =>
+								setSelectedColors(e.target.value as string[])
+							}
+							input={<OutlinedInput label="Colors" />}
+							renderValue={(selected) => selected.join(", ")}
+						>
+							{colors.map((color) => (
+								<MenuItem key={color} value={color}>
+									<Checkbox
+										checked={selectedColors.includes(color)}
+									/>
+									<ListItemText primary={color} />
 								</MenuItem>
 							))}
 						</Select>
