@@ -26,7 +26,7 @@ export default function LoginForm(){
 	const validateFullName = (name: string): InfoErrors => {
 		//regex for valid name (a first name, optionally with another name separated by -, followed by one or more other names)
 		const regName: RegExp =
-			/^[a-zA-Z]([\-]?[a-zA-Z]+)*( [a-zA-Z]([\-]?[a-zA-Z]+)*)+$/;
+			 /^[a-zA-Z]([\-]?[a-zA-Z]+)*( [a-zA-Z]([\-]?[a-zA-Z]+)*)*$/;
 		if (!regName.test(name)) {
 			return { fullName: "Not a valid full name" };
 		}
