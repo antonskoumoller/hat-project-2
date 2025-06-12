@@ -6,6 +6,15 @@ export default function LoggedInPage(){
 	const { unregister, logout } = loginContext;
 	const navigate = useNavigate();
 
+    function confirmUnregister() {
+        const confirmBox = window.confirm(
+            "Are you sure you want to unregister (this can not be undone)?"
+        )
+        if (confirmBox === true) {
+          unregister();
+        }
+    } 
+
     return (
         <div className="columns-1 flex-col justify-center pt-4">
             {/* style: child is form, which is flex in column-style of fixed size */}
@@ -32,7 +41,9 @@ export default function LoggedInPage(){
                     {" "}
                     Log out
                 </button>
-                <button className="btn-secondary m-3" onClick={unregister}>
+                <button 
+                    className="btn-secondary m-3"
+                    onClick={confirmUnregister}>
                     {" "}
                     Unregister
                 </button>

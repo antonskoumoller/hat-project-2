@@ -7,7 +7,7 @@ type OverlayContentProps = {
 export const OverlayContent = ({ hat }: OverlayContentProps) => {
 	return (
 		<div className="flex flex-col w-full overflow-y-auto p-4">
-			<h1 className="text-[#20c997] w-full text-2xl font-bold mb-4 border-b pb-2">
+			<h1 className="text-primary w-full font-bold mb-4 border-b pb-2">
 				{hat.name}
 			</h1>
 

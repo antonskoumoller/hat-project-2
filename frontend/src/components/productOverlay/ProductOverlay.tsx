@@ -16,18 +16,20 @@ export const ShowProductOverlay = ({
 		<>
 			{hat && (
 				<div
-					className="fixed flex justify-center items-center top-0 left-0 w-full h-full bg-black/50 z-[1000] p-5 overflow-auto"
+					className="fixed inset-0 z-[1000] bg-black/50 overflow-y-auto p-4"
 					onClick={onClose}
 				>
-					<div
-						className="relative flex flex-col bg-white p-5 rounded-xl w-full max-w-2xl"
-						onClick={(e) => e.stopPropagation()}
-					>
-						<div className="flex flex-col md:flex-row gap-5 flex-grow overflow-auto">
-							<OverlayContent hat={hat} />
-							<OverlayImage hat={hat} />
+					<div className="flex justify-center items-start min-h-full">
+						<div
+							className="relative flex flex-col bg-white p-5 rounded-xl w-full max-w-2xl mt-10"
+							onClick={(e) => e.stopPropagation()}
+						>
+							<div className="flex flex-col md:flex-row gap-5 flex-grow overflow-auto">
+								<OverlayContent hat={hat} />
+								<OverlayImage hat={hat} />
+							</div>
+							<OverlayButtons onClose={onClose} hat={hat} />
 						</div>
-						<OverlayButtons onClose={onClose} hat={hat} />
 					</div>
 				</div>
 			)}
