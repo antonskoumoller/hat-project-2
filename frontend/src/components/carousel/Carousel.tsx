@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ItemCard, { HatItem } from "../ItemCard";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
-import { Grid } from "@mui/material";
+import Grid from "@mui/material/Grid";
 
 // export interface CarouselProps
 type CarouselProps = {
@@ -15,7 +15,7 @@ export default function Carousel({ CarouselHats }: CarouselProps) {
 
 	// Hats according to screen size
 	function hatsAccToScreen() {
-		return window.innerWidth < 768 ? 1 : 3;
+		return window.innerWidth < 900 ? 1 : 3;
 	}
 
 	// Handling number of hats when screen size changes
@@ -48,26 +48,43 @@ export default function Carousel({ CarouselHats }: CarouselProps) {
 	}
 
 	return (
-		<div>
-			<h1 className="text-left ml-6">Popular Items</h1>
-			<Grid
-				container
-				spacing={{ xs: 2, md: 3 }}
-				columns={{ xs: 4, sm: 8, md: 12 }}
-				alignItems="center"
-			>
-				<button onClick={prevSlide} className="absolute left-0 p-3">
+		<div className="relative w-full">
+			<h1 className="text-left ml-6 justify-self-center">
+				Popular Items
+			</h1>
+			<div className="relative mx-auto w-fit flex items-center justify-center mt-4">
+				{/* Left Arrow */}
+				<button
+					onClick={prevSlide}
+					className="absolute left-[-40px] z-10 p-2 bg-white rounded-full shadow"
+					aria-label="Previous"
+				>
 					<SlArrowLeft className="text-primary w-6 h-6 hover:text-primary-accent" />
 				</button>
-				{currentHats.map((hat) => (
-					<Grid size={4}>
-						<ItemCard hat={hat} />
-					</Grid>
-				))}
-				<button onClick={nextSlide} className="absolute right-0 p-3">
+
+				{/* Carousel content */}
+				<Grid
+					container
+					spacing={{ xs: 2, md: 3 }}
+					justifyContent="center"
+					sx={{ width: "fit-content" }}
+				>
+					{currentHats.map((hat) => (
+						<Grid key={hat.id}>
+							<ItemCard hat={hat} />
+						</Grid>
+					))}
+				</Grid>
+
+				{/* Right Arrow */}
+				<button
+					onClick={nextSlide}
+					className="absolute right-[-40px] z-10 p-2 bg-white rounded-full shadow"
+					aria-label="Next"
+				>
 					<SlArrowRight className="text-primary w-6 h-6 hover:text-primary-accent" />
 				</button>
-			</Grid>
+			</div>
 		</div>
 	);
 }

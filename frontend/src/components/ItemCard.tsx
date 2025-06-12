@@ -38,7 +38,7 @@ export default function ItemCard({ hat }: Props) {
 					hat={hat}
 				/>
 			)}
-			<div className="relative flex flex-col max-w-sm w-full border border-[#20c997] rounded-xl overflow-hidden shadow-md transition hover:shadow-lg pt-4">
+			<div className="relative flex flex-col max-w-sm w-[350px] border border-[#20c997] rounded-xl overflow-hidden shadow-md transition hover:shadow-lg pt-4">
 				{showAlert && (
 					<div className="absolute top-2 left-2 right-2 z-50">
 						<Alert severity="success">
@@ -46,11 +46,14 @@ export default function ItemCard({ hat }: Props) {
 						</Alert>
 					</div>
 				)}
-				<img
-					src={hat.img}
-					alt={hat.name}
-					className="w-full h-48 object-contain"
-				/>
+				<div className="w-full h-[192px] bg-white flex items-center justify-center">
+					<img
+						src={hat.img}
+						alt={hat.name}
+						className="max-h-full max-w-full object-contain"
+					/>
+				</div>
+
 				<div className="p-4 flex flex-col flex-grow">
 					<h2 className="text-xl font-semibold text-gray-800 mb-1 line-clamp-1">
 						{hat.name}

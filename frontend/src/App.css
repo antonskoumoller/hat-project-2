@@ -3,7 +3,7 @@
 
 /* Layout Root */
 #root {
-	max-width: 1280px;
+	max-width: auto;
 	margin: 0 auto;
 	text-align: center;
 	--color-primary: #20c997;
